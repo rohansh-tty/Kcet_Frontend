@@ -1,0 +1,13 @@
+
+
+# Dependency directories
+node_modules/
+
+# visual studio code directory
+.vscode/
+
+# dotenv environment variables file
+.env
+
+# package-lock.json
+package-lock.json
