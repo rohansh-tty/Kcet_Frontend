@@ -16,7 +16,7 @@ module.exports = {
   },
   theme: {
     fontFamily: {
-      "recursive": ["Recursive", "sans-serif"]
+      "sans": ["Recursive", "sans-serif"]
     },
     extend: {
       colors: {

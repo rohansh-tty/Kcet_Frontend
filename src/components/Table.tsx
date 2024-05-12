@@ -9,16 +9,19 @@ interface CutoffType {
   branch: string
   category: string
   college_name: string
+  year: string
 }
 
 export default function DemoTable({ data }: { data: CutoffType }) {
   return (
-    <DataTable value={data} showGridlines tableStyle={{ minWidth: '50rem' }}>
+    <DataTable value={data} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} showGridlines tableStyle={{ minWidth: '50rem' }}>
       <Column field="college_code" header="Code"></Column>
-      <Column field="college_name" header="Code"></Column>
+      <Column field="college_name" header="College Name"></Column>
       <Column field="cutoff" header="Cutoff"></Column>
       <Column field="branch" header="Branch"></Column>
       <Column field="category" header="Category"></Column>
+      <Column field="year" header="Year"></Column>
+
     </DataTable>
   )
 }
