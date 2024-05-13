@@ -11,15 +11,11 @@ import Login, { AuthPage } from './components/Login'
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <div>Hello world!</div>
-  },
-  {
     path: '/cutoff',
     element: <Cutoff />
   }, 
   {
-    path: '/login',
+    path: '/',
     element: <AuthPage />
   }
 ])
