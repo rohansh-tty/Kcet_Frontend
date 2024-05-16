@@ -21,7 +21,6 @@ export default function DemoTable({ data }: { data: CutoffType }) {
       <Column field="branch" header="Branch"></Column>
       <Column field="category" header="Category"></Column>
       <Column field="year" header="Year"></Column>
-
     </DataTable>
   )
 }

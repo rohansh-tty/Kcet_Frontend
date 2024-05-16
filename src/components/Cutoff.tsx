@@ -6,19 +6,26 @@ import ReactSelect from 'react-select'
 import { FrappeApp } from 'frappe-js-sdk'
 import DemoTable from './Table'
 import { get } from 'http'
-import { table } from 'console'
+import { log, table } from 'console'
+import { useCutoffStore } from '../store/CutoffStore'
+import { useAuthStore } from '../store/AuthStore'
+
+type BranchOptionType = {
+  branch_name: string
+  branch_short_name: string
+}
 
 type Inputs = {
   min_cutoff: string
   max_cutoff: string
 
   category: string
-  year: string
+  year: string[]
   round: string
-  branch: string
+  branch: BranchOptionType[]
 }
 
-interface CutoffArgs {
+export interface CutoffArgs {
   min_cutoff: string
   max_cutoff: string
   branch: string
@@ -151,33 +158,36 @@ const Cutoff = () => {
     getValues
   } = useForm<Inputs>({})
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+  const getBranch = useCutoffStore((state)=>state.getBranch)
+  const getCutoffResults = useCutoffStore((state)=>state.getCutoffResults)
+
+  const loginResponse = useAuthStore((state)=>state.loginResponse)
 
   const getCutoff = async (args: CutoffArgs) => {
     const myHeaders = new Headers()
-    myHeaders.append('Authorization', 'Bearer PijLCdSnFAgdwOQQCOypl8aB8kOGhP')
+    myHeaders.append('Authorization', `Bearer ${loginResponse.access_token}`)
     myHeaders.append('Access-Control-Allow-Origin', '*')
 
     const requestOptions = {
       method: 'GET',
       headers: myHeaders
     }
-    // console.log('args >>>', typeof args.branch, args.branch)
+
+    // console.log('muyh', myHeaders)
+    // const res = await getBranch(myHeaders)
+    // console.log('res ', res)
 
     const res = await fetch(
       `http://development.localhost:8000/api/resource/Cutoff?filters=[["cutoff", ">", "${args.min_cutoff}"], ["cutoff", "<", "${args.max_cutoff}"], ["branch", "in", "${args.branch}"], ["round", "=", "${args.round}"], ["year", "in", "${args.year}"], ["category", "=", "${args.category}"]]&fields=["college_code", "cutoff", "branch", "category", "college_name", "year"]&limit_page_length=0`,
       requestOptions
     )
-    const resData = await res.text()
-    // sort data by cutoff in asceding order
-    setTableData(
-      JSON.parse(resData)['data'].sort((a: any, b: any) => a.cutoff - b.cutoff)
-    )
+  
   }
   const getCategories = () => {}
   const getBranches = async () => {
     // api/resource/Branch?fields=["branch_name", "branch_short_name"]&limit_page_length=0
     const myHeaders = new Headers()
-    myHeaders.append('Authorization', 'Bearer PijLCdSnFAgdwOQQCOypl8aB8kOGhP')
+    myHeaders.append('Authorization',  `Bearer ${loginResponse.access_token}`)
     myHeaders.append('Access-Control-Allow-Origin', '*')
 
     const requestOptions = {
@@ -185,24 +195,18 @@ const Cutoff = () => {
       headers: myHeaders
     }
 
-    const res = await fetch(
-      `http://development.localhost:8000/api/resource/Branch?fields=["branch_name", "branch_short_name"]&limit_page_length=0`,
-      requestOptions
-    )
-    const resData = await res.text()
-    console.log('branch >>>', resData)
-    setBranchList(JSON.parse(resData)?.data) 
+    const res = await getBranch()
+    setBranchList(res?.data) 
   }
 
   useEffect(() => {
     getBranches()
-    console.log('data ', tableData)
   }, [])
 
   return (
     <div className="flex flex-col overflow-auto h-full w-full items-start justify-start overflow-y-scroll">
       {/* <div className="h-full lg:w-[40%] md:w-full items-center justify-center"> */}
-      <div className="flex  bg-primary  p-8 shadow-xl w-full h-[80%] ">
+      <div className="flex   p-8 shadow-xl w-full h-[80%] ">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col  space-y-8 h-full md:w-full lg:w-[55%] items-start justify-center overflow-y-scroll "
@@ -210,7 +214,7 @@ const Cutoff = () => {
           {/* register your input into the hook by invoking the "register" function */}
           <div className="flex flex-row space-x-2">
             <div className="flex flex-col space-y-2 md:space-y-0">
-              <label className="text-accent">Min Rank</label>
+              <label className="text-black">Min Rank</label>
               <input
                 className="rounded-md w-[40%]"
                 defaultValue="1000"
@@ -220,7 +224,7 @@ const Cutoff = () => {
             </div>
 
             <div className="flex flex-col space-y-2 md:space-y-0">
-              <label className="text-accent">Max Rank</label>
+              <label className="text-black">Max Rank</label>
               <input
                 className="rounded-md w-[40%]"
                 defaultValue="15000"
@@ -233,10 +237,11 @@ const Cutoff = () => {
           <div className="flex flex-row w-full space-x-2">
             {/* Caste */}
             <div className="flex flex-col w-full">
-              <label className="text-accent">Caste Category</label>
+              <label className="text-black">Caste Category</label>
               <Controller
                 name="category"
                 control={control}
+                defaultValue="3BG"
                 render={({ field }) => (
                   <ReactSelect
                     className="w-full"
@@ -255,9 +260,10 @@ const Cutoff = () => {
 
             {/* Round */}
             <div className="flex flex-col w-full">
-              <label className="text-accent">Round</label>
+              <label className="text-black">Round</label>
               <Controller
                 name="round"
+                defaultValue='1'
                 control={control}
                 render={({ field }) => (
                   <ReactSelect
@@ -278,10 +284,11 @@ const Cutoff = () => {
           <div className="flex flex-row w-full space-x-2">
             {/* Year */}
             <div className="flex flex-col w-full">
-              <label className="text-accent">Year</label>
+              <label className="text-black">Year</label>
               <Controller
                 name="year"
                 control={control}
+                defaultValue={["2023"]}
                 render={({ field }) => (
                   <ReactSelect
                     isMulti={true}
@@ -303,10 +310,11 @@ const Cutoff = () => {
 
             {/* Branch */}
             <div className="flex flex-col w-full">
-              <label className="text-accent">Branch</label>
+              <label className="text-black">Branch</label>
               <Controller
                 name="branch"
                 control={control}
+                defaultValue={[{"branch_short_name":"CS", "branch_name":'Computer Science'}]}
                 render={({ field }) => (
                   <ReactSelect
                     isMulti={true}
@@ -331,28 +339,33 @@ const Cutoff = () => {
           onClick={() => {
             console.log('submit button pressed...')
           }}
-          className="bg-accent rounded-md w-[25%] p-2 text-primary md:p-1"
+          className="bg-black rounded-md w-[25%] p-2 text-primary md:p-1"
           label="Submit"
         /> */}
           <Button
-            className="bg-accent text-primary w-[40%]"
+            className="bg-black text-primary w-[40%]"
             label="Submit"
             icon="pi pi-check"
             iconPos="right"
             onClick={async () => {
               const formInputs = getValues()
-              console.log('submit button pressed...', formInputs.branch)
+              console.log('submit button pressed...', typeof formInputs)
               // console.log(getValues())
-              await getCutoff({
+              const response = await getCutoffResults({
                 min_cutoff: formInputs.min_cutoff,
                 max_cutoff: formInputs.max_cutoff,
-                branch: formInputs.branch[0].branch_short_name,
-                  // .map((item: any) => item.value)
-                  // .join(','),
+                branch: formInputs?.branch?.map((branch)=>branch.branch_short_name).join(','),
                 year: formInputs.year.map((item: any) => item.value).join(','),
                 round: formInputs.round.value,
                 category: formInputs.category.value
               })
+              console.log('response >>>', response)
+
+              // const resData = await response.text()
+              // sort data by cutoff in asceding order
+              setTableData(
+                response['data'].sort((a: any, b: any) => a.cutoff - b.cutoff)
+              )
             }}
           />
         </form>

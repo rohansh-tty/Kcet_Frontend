@@ -10,6 +10,7 @@ import { Menubar } from 'primereact/menubar'
 import { InputText } from 'primereact/inputtext'
 import { Avatar } from 'primereact/avatar'
 import { Badge } from 'primereact/badge'
+import { Toaster } from 'react-hot-toast'
 
 const frappe = new FrappeApp('http://127.0.0.1:8000')
 
@@ -33,20 +34,18 @@ const Menu = () => {
       )}
     </a>
   )
-  const items =[]
+  const items = []
 
-  const start = (
-   <span className="text-accent">KCET Cutoff Analyzer</span>
-  )
+  const start = <span className="text-accent">KCET Cutoff Analyzer</span>
   const end = (
     <div className="flex align-items-center gap-2">
-     {/* <span>Dark Mode</span> */}
+      {/* <span>Dark Mode</span> */}
     </div>
   )
   return (
-      <div className="card">
-        <Menubar model={items} start={start} end={end} />
-      </div>
+    <div className="card">
+      <Menubar model={items} start={start} end={end} />
+    </div>
   )
 }
 
@@ -63,11 +62,13 @@ function App(): ReactElement {
     {
       label: 'Contact',
       icon: 'pi pi-envelope'
-    }
+    },{}
   ]
   return (
     <>
       <div className="flex flex-col h-screen w-screen overflow-y-scroll ">
+        <Toaster />
+
         <Menu />
         <div className="flex h-full w-full items-center justify-center">
           <Cutoff />

@@ -9,9 +9,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "frappe-js-sdk": "^1.5.0",
+    "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "lucide-react": "^0.368.0",
     "match-sorter": "^6.3.4",
@@ -20,17 +22,21 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.51.1",
+    "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
     "sort-by": "^0.0.2",
     "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "universal-cookie": "^7.1.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",
     "@commitlint/config-conventional": "^15.0.0",
     "@heroicons/react": "^1.0.5",
     "@tailwindcss/forms": "^0.5.1",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^16.18.96",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",

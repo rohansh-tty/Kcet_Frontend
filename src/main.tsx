@@ -8,12 +8,17 @@ import Cutoff from './components/Cutoff'
 import { PrimeReactProvider } from 'primereact/api'
 import Tailwind from 'primereact/passthrough/tailwind'
 import Login, { AuthPage } from './components/Login'
+import Test from './components/Test'
 
 const router = createBrowserRouter([
   {
     path: '/cutoff',
     element: <Cutoff />
   }, 
+  {
+    path: '/test',
+    element: <Test/>
+  },
   {
     path: '/',
     element: <AuthPage />
