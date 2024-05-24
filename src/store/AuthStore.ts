@@ -15,7 +15,10 @@ export interface LoginResponseAPI {
 }
 
 type AuthStoreType = {
-  login: (usr:string, pwd:string) => {} 
+  signup: (name: string, usr: string, pwd: string) => {}
+  login: (usr: string, pwd: string) => {}
+  verifySignup: (token: string) => {}
+
   loginResponse: LoginResponseAPI
   setLoginResponse: (response: LoginResponseAPI) => void
 }
@@ -28,6 +31,24 @@ export const useAuthStore = create<AuthStoreType>()((set) => ({
       `${BASE_URL}/api/method/cutoff_app.core.auth.get_token?usr=${usr}&pwd=${pwd}`,
       { headers: {} }
     )
+    return res
+  },
+  signup: async (name: string, email: string, password: string) => {
+    const res = await axios.post(
+      `${BASE_URL}/api/method/cutoff_app.core.auth.custom_signup_user`, //?name=${name}&email=${email}&password=${password}`,
+      { email: email, name: name, password: password },
+      { headers: {} }
+    )
+    console.log('signup response>>>', res)
+    return res
+  },
+  verifySignup: async (token: string) => {
+    const res = await axios.post(
+      `${BASE_URL}/api/method/cutoff_app.core.auth.email_verification_handler?token=${token}`,
+      { token: token },
+      { headers: {} }
+    )
+    console.log('signup response>>>', res)
     return res
   },
   loginResponse: {} as LoginResponseAPI,

@@ -68,7 +68,6 @@ function App(): ReactElement {
     <>
       <div className="flex flex-col h-screen w-screen overflow-y-scroll ">
         <Toaster />
-
         <Menu />
         <div className="flex h-full w-full items-center justify-center">
           <Cutoff />

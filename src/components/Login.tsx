@@ -9,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import { LoginResponseAPI } from '../store/CutoffStore'
+import { Checkbox } from 'primereact/checkbox'
 
 type LoginInputs = {
   email: string
@@ -21,7 +22,7 @@ type SignUpInputs = {
   password: string
 }
 
-export const Signup = () => {
+export const Signup = ({ verifyHandler }) => {
   const {
     register,
     handleSubmit,
@@ -29,8 +30,28 @@ export const Signup = () => {
     formState: { errors }
   } = useForm<SignUpInputs>()
   const cookies = new Cookies()
+  const navigate = useNavigate()
+  const signup = useAuthStore((state) => state.signup)
 
-  const onSubmit: SubmitHandler<SignUpInputs> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
+    try {
+      const res = await signup(data.username, data.email, data.password)
+      if (res?.status === 200) {
+        // setLoginInfo(res?.data)
+        localStorage.setItem('user', JSON.stringify(res?.data))
+        toast.success('Login Success')
+        verifyHandler(true)
+        console.log('showing verify checkbox')
+
+        // navigate('/cutoff')
+      } else {
+        console.log('Login Failed >>>', res)
+        toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
+      }
+    } catch (error) {
+      toast.error(`Failed to Login, ${error}`)
+    }
+  }
 
   return (
     <>
@@ -49,7 +70,7 @@ export const Signup = () => {
           <label>Email</label>
           <input
             className="w-[40%]"
-            defaultValue="test"
+            defaultValue="metyho@citmo.net"
             {...register('email')}
           />
         </div>
@@ -67,7 +88,11 @@ export const Signup = () => {
         </div>
 
         {/* <input type="submit" /> */}
-        <button>Submit</button>
+        <div className="p-2 w-full flex items-center justify-center ">
+          <button className="bg-blue-500 p-4 rounded-md  items-center flex text-lg">
+            Submit
+          </button>
+        </div>
       </form>
     </>
   )
@@ -99,11 +124,12 @@ export const Login = () => {
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
       const res = await login(data.email, data.password)
+      console.log('response >>>', res)
       if (res?.status === 200) {
         setLoginInfo(res?.data)
         localStorage.setItem('user', JSON.stringify(res?.data))
         toast.success('Login Success')
-        navigate('/cutoff')
+        // navigate('/cutoff')
       } else {
         console.log('Login Failed >>>', res)
         toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
@@ -138,32 +164,96 @@ export const Login = () => {
       </div>
 
       {/* <input type="submit" /> */}
-      <button>Submit</button>
+      <div className="p-2 w-full flex items-center justify-center ">
+        <button className="bg-blue-500 p-4 rounded-md  items-center flex text-lg">
+          Submit
+        </button>
+      </div>
     </form>
   )
 }
 
 export const AuthPage = () => {
   const [signUpPressed, setBtnPressed] = useState(0)
+  const [showVerify, setShowVerify] = useState(false)
+  const verifyHandler = (value: boolean) => {
+    if (signUpPressed) {
+      setBtnPressed(0)
+      setShowVerify(value)
+    }
+  }
   return (
     <>
-      <div className="grid grid-rows-2 w-full h-full p-4 bg-green-300 ">
+      <div className="grid grid-rows-6 w-full h-full p-4 bg-green-300 ">
         <Toaster />
-        <div className="flex flex-col  items-center justify-center p-8 w-full h-full">
+        <div className="flex flex-col row-span-1 items-center justify-center p-8 w-full h-full">
           <h1 className="text-3xl">
             Simple Cutoff Tracker for KCET Engineering
           </h1>
           <p>Includes First Round Cutoff Ranks from 2022, 2023</p>
         </div>
 
-        <div className="flex flex-col w-full items-center justify-center bg-yellow-500 p-4">
-          <div className="flex flex-row space-x-4 items-center justify-center w-full ">
-            <Button onClick={() => setBtnPressed(1)}>SignUp</Button>
-            <Button onClick={() => setBtnPressed(0)}>Login</Button>
-          </div>
+        {/* Web Responsive */}
+        <div className="flex w-full h-full row-span-5 bg-yellow-400 items-center justify-center">
+          <div className=" lg:w-[40%] w-full h-full flex flex-col items-center justify-start  ">
+            {!showVerify && (
+              <div className="flex flex-row  items-center justify-center w-full p-4 space-x-8 ">
+                <Button
+                  className="p-2 font-bold text-xl"
+                  onClick={() => setBtnPressed(1)}
+                >
+                  SignUp
+                </Button>
+                <Button
+                  className="p-2 font-bold text-xl"
+                  onClick={() => setBtnPressed(0)}
+                >
+                  Login
+                </Button>
+              </div>
+            )}
 
-          <div className='lg:w-[50%] w-full'>{signUpPressed ? <Signup /> : <Login />}</div>
+            <div className="w-full">
+              {!!signUpPressed && <Signup verifyHandler={verifyHandler} />}
+              {!signUpPressed && !showVerify && <Login />}
+              {showVerify ? (
+                <p className="text-center">
+                  Thank you for signing up, you will be receiving a verfication
+                  link in your email
+                </p>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* Mobiel Responsive */}
+        {/* <div className="grid grid-cols-2 lg:hidden w-full h-full row-span-5">
+          <div className="col-span-2 bg-yellow-300 "></div>
+          <div className="col-span-2 bg-red-400 ">
+            {!showVerify && (
+              <div className="flex flex-row space-x-4 items-center justify-center w-full">
+                <Button onClick={() => setBtnPressed(1)}>SignUp</Button>
+                <Button onClick={() => setBtnPressed(0)}>Login</Button>
+              </div>
+            )}
+
+            <div className="w-full">
+              {!!signUpPressed && <Signup verifyHandler={verifyHandler} />}
+              {!signUpPressed && !showVerify && <Login />}
+              {showVerify ? (
+                <p className="text-center">
+                  Thank you for signing up, you will be receiving a verfication
+                  link in your email
+                </p>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+          <div className="col-span-2 bg-blue-300 "></div>
+        </div> */}
       </div>
     </>
   )
