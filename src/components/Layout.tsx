@@ -1,6 +1,6 @@
 import { Avatar } from 'primereact/avatar'
 import { Menu } from 'primereact/menu'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Layout = ({ children }: any) => {
@@ -30,6 +30,16 @@ const Layout = ({ children }: any) => {
     }
   ]
 
+  const [labelValue, setLabelValue] = useState('A')
+  useEffect(() => {
+    const userObject = localStorage.getItem('user')
+    if (userObject) {
+      const firstLetter = JSON.parse(localStorage.getItem('user') ?? '')
+        ?.full_name[0]
+      setLabelValue(firstLetter)
+    }
+  }, [])
+
   return (
     <div className="grid grid-rows-10  grid-cols-1  h-full w-full">
       <div className="row-span-1  flex   items-center w-full  ">
@@ -48,7 +58,7 @@ const Layout = ({ children }: any) => {
             }}
             aria-controls="popup_menu_left"
             aria-haspopup
-            label="V"
+            label={labelValue}
             size="large"
             style={{ backgroundColor: '#2196F3', color: '#ffffff' }}
           />

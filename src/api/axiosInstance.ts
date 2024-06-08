@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { useAuthStore } from '../store/AuthStore';
 
+const BACKEND_DEV_URL = ""
+const BACKEND_PROD_URL = ""
+
+
 export const client = axios.create({
     baseURL: "http://development.localhost:8000"
 })
