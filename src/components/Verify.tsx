@@ -71,6 +71,19 @@ export const VerifyComponent = () => {
         <div className="flex flex-col w-[full] row-span-5 items-center justify-start   p-4">
           <Verify />
         </div>
+        <div className="flex flex-row items-center justify-center w-full h-full space-x-4">
+          <p className="text-center">© 2023 Cutoff Tracker</p>
+
+          <p className="text-center ">
+            Made with ❤️ by{' '}
+            <a
+              className="hover:text-blue-400 no-underline"
+              href="https://www.linkedin.com/in/rohan-shetty641/"
+            >
+              Rohan Shetty
+            </a>
+          </p>
+        </div>
       </div>
     </>
   )

@@ -16,6 +16,8 @@ import { InputText } from 'primereact/inputtext'
 import { Badge } from 'primereact/badge'
 import { Menu } from 'primereact/menu'
 import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
+import Layout from './Layout'
 
 const Test = () => {
   return (
@@ -183,7 +185,12 @@ const Cutoff = () => {
   }
 
   useEffect(() => {
-    getBranches()
+    if (localStorage.getItem('user')) {
+      getBranches()
+    } else {
+      toast.error('Redirecting to Login Page')
+      navigate('/')
+    }
   }, [])
 
   const profileMenu = useRef(null)
@@ -211,190 +218,176 @@ const Cutoff = () => {
       ]
     }
   ]
+
   return (
-    <div className="grid grid-rows-9  grid-cols-1  h-full w-full ">
-      <div className="row-span-1 flex   items-center w-full border-2 ">
-        <div className="flex flex-row  items-center justify-between w-full p-8 ">
-          <div className="font-bold text-2xl ">
-            <span>KCET Cutoff Analyzer</span>
-          </div>
-          <Menu model={items} popup ref={profileMenu} id="popup_menu_left" />
+    <Layout>
+      <div className="grid grid-rows-8  grid-cols-1  h-full w-full ">
+        <div className="md:row-span-4  row-span-4 h-full w-full pl-8 flex items-start justify-start  border-2 ">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col  space-y-8 h-full md:w-[40%] w-[90%] items-center justify-center    "
+          >
+            <div className="flex flex-row w-full space-x-2">
+              <div className="flex flex-col space-y-2 md:space-y-0">
+                <label className="text-black">Min Rank</label>
+                <input
+                  className="rounded-md md:w-[40%] w-full"
+                  defaultValue="1000"
+                  {...register('min_cutoff')}
+                />
+                {errors.min_cutoff && <span>This field is required</span>}
+              </div>
 
-          <Avatar
-            onClick={(event: any) => profileMenu?.current.toggle(event)}
-            aria-controls="popup_menu_left"
-            aria-haspopup
-            label="V"
-            size="large"
-            style={{ backgroundColor: '#2196F3', color: '#ffffff' }}
-          />
-        </div>
-        {/* <TemplateDemo /> */}
-      </div>
-      <div className="md:row-span-4  row-span-4 h-full w-full pl-8 flex items-start justify-start  border-2 ">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col  space-y-8 h-full md:w-[40%] w-[90%] items-center justify-center    "
-        >
-          {/* register your input into the hook by invoking the "register" function */}
-          <div className="flex flex-row w-full space-x-2">
-            <div className="flex flex-col space-y-2 md:space-y-0">
-              <label className="text-black">Min Rank</label>
-              <input
-                className="rounded-md md:w-[40%] w-full"
-                defaultValue="1000"
-                {...register('min_cutoff')}
-              />
-              {errors.min_cutoff && <span>This field is required</span>}
+              <div className="flex flex-col space-y-2 md:space-y-0">
+                <label className="text-black">Max Rank</label>
+                <input
+                  className="rounded-md md:w-[40%] w-full"
+                  defaultValue="15000"
+                  {...register('max_cutoff')}
+                />
+                {errors.max_cutoff && <span>This field is required</span>}
+              </div>
             </div>
 
-            <div className="flex flex-col space-y-2 md:space-y-0">
-              <label className="text-black">Max Rank</label>
-              <input
-                className="rounded-md md:w-[40%] w-full"
-                defaultValue="15000"
-                {...register('max_cutoff')}
-              />
-              {errors.max_cutoff && <span>This field is required</span>}
-            </div>
-          </div>
-
-          <div className="flex flex-row w-full space-x-2 ">
-            {/* Caste */}
-            <div className="flex flex-col w-full">
-              <label className="text-black">Caste Category</label>
-              <Controller
-                name="category"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    className="w-full"
-                    isMulti={true}
-                    isClearable
-                    {...field}
-                    options={caste_category_columns.map((item) => ({
-                      value: item,
-                      label: item
-                    }))}
-                  />
-                )}
-              />
-              {errors.category && <span>This field is required</span>}
-            </div>
-
-            {/* Round */}
-            <div className="flex flex-col w-full">
-              <label className="text-black">Round</label>
-              <Controller
-                name="round"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    className="w-full"
-                    isClearable
-                    {...field}
-                    options={[
-                      { value: '1', label: '1' },
-                      { value: '2', label: '2' },
-                      { value: '3', label: '3' }
-                    ]}
-                  />
-                )}
-              />
-              {errors.category && <span>This field is required</span>}
-            </div>
-          </div>
-          <div className="flex flex-row w-full space-x-2">
-            {/* Year */}
-            <div className="flex flex-col w-full">
-              <label className="text-black">Year</label>
-              <Controller
-                name="year"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isMulti={true}
-                    className="w-full "
-                    isClearable
-                    blurInputOnSelect
-                    {...field}
-                    options={['2019', '2020', '2021', '2022', '2023'].map(
-                      (item) => ({
+            <div className="flex flex-row w-full space-x-2 ">
+              {/* Caste */}
+              <div className="flex flex-col w-full">
+                <label className="text-black">Caste Category</label>
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      className="w-full"
+                      isMulti={true}
+                      isClearable
+                      {...field}
+                      options={caste_category_columns.map((item) => ({
                         value: item,
                         label: item
-                      })
-                    )}
-                  />
-                )}
-              />
-              {errors.year && <span>This field is required</span>}
+                      }))}
+                    />
+                  )}
+                />
+                {errors.category && <span>This field is required</span>}
+              </div>
+
+              {/* Round */}
+              <div className="flex flex-col w-full">
+                <label className="text-black">Round</label>
+                <Controller
+                  name="round"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      className="w-full"
+                      isClearable
+                      {...field}
+                      options={[
+                        { value: '1', label: '1' },
+                        { value: '2', label: '2' },
+                        { value: '3', label: '3' }
+                      ]}
+                    />
+                  )}
+                />
+                {errors.category && <span>This field is required</span>}
+              </div>
+            </div>
+            <div className="flex flex-row w-full space-x-2">
+              {/* Year */}
+              <div className="flex flex-col w-full">
+                <label className="text-black">Year</label>
+                <Controller
+                  name="year"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      isMulti={true}
+                      className="w-full "
+                      isClearable
+                      blurInputOnSelect
+                      {...field}
+                      options={['2019', '2020', '2021', '2022', '2023'].map(
+                        (item) => ({
+                          value: item,
+                          label: item
+                        })
+                      )}
+                    />
+                  )}
+                />
+                {errors.year && <span>This field is required</span>}
+              </div>
+
+              {/* Branch */}
+              <div className="flex flex-col w-full">
+                <label className="text-black">Branch</label>
+                <Controller
+                  name="branch"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      isMulti={true}
+                      className="w-full"
+                      isClearable
+                      blurInputOnSelect
+                      {...field}
+                      getOptionLabel={(option) => option.branch_name}
+                      getOptionValue={(option) => option.branch_short_name}
+                      // options={branch_map}
+                      options={branchList}
+                    />
+                  )}
+                />
+                {errors.branch && <span>This field is required</span>}
+              </div>
             </div>
 
-            {/* Branch */}
-            <div className="flex flex-col w-full">
-              <label className="text-black">Branch</label>
-              <Controller
-                name="branch"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isMulti={true}
-                    className="w-full"
-                    isClearable
-                    blurInputOnSelect
-                    {...field}
-                    getOptionLabel={(option) => option.branch_name}
-                    getOptionValue={(option) => option.branch_short_name}
-                    // options={branch_map}
-                    options={branchList}
-                  />
-                )}
+            <div className="flex flex-row items-center justify-end w-full ">
+              <Button
+                className="bg-black text-primary  w-[50%] rounded-md"
+                label="Submit"
+                icon="pi pi-check"
+                iconPos="right"
+                onClick={async () => {
+                  // TODO: uncomment this
+                  const formInputs = getValues()
+                  const response = await getCutoffResults({
+                    min_cutoff: formInputs.min_cutoff,
+                    max_cutoff: formInputs.max_cutoff,
+                    branch: formInputs?.branch
+                      ?.map((branch) => branch.branch_short_name)
+                      .join(','),
+                    year: formInputs.year
+                      .map((item: any) => item.value)
+                      .join(','),
+                    round: formInputs.round.value,
+                    category: formInputs.category
+                      .map((item: any) => item.value)
+                      .join(',')
+                  })
+
+                  // const resData = await response.text()
+                  // sort data by cutoff in asceding order
+                  setTableData(
+                    response['data'].sort(
+                      (a: any, b: any) => a.cutoff - b.cutoff
+                    )
+                  )
+                }}
               />
-              {errors.branch && <span>This field is required</span>}
             </div>
+          </form>
+        </div>
+        <div className="md:row-span-4 row-span-4 md:h-full lg:w-full overflow-scroll flex items-center justify-start p-8">
+          <div className="flex flex-col h-full w-full space-y-4">
+            <span className="font-bold text-xl">Cutoff Results</span>
+            <DemoTable data={tableData ?? []} />
           </div>
-
-          <div className="flex flex-row items-center justify-end w-full ">
-            <Button
-              className="bg-black text-primary  w-[50%] rounded-md"
-              label="Submit"
-              icon="pi pi-check"
-              iconPos="right"
-              onClick={async () => {
-                // TODO: uncomment this
-                const formInputs = getValues()
-                const response = await getCutoffResults({
-                  min_cutoff: formInputs.min_cutoff,
-                  max_cutoff: formInputs.max_cutoff,
-                  branch: formInputs?.branch
-                    ?.map((branch) => branch.branch_short_name)
-                    .join(','),
-                  year: formInputs.year
-                    .map((item: any) => item.value)
-                    .join(','),
-                  round: formInputs.round.value,
-                  category: formInputs.category
-                    .map((item: any) => item.value)
-                    .join(',')
-                })
-
-                // const resData = await response.text()
-                // sort data by cutoff in asceding order
-                setTableData(
-                  response['data'].sort((a: any, b: any) => a.cutoff - b.cutoff)
-                )
-              }}
-            />
-          </div>
-        </form>
-      </div>
-      <div className="md:row-span-4 row-span-4 md:h-full lg:w-full overflow-scroll flex items-center justify-start p-8">
-        <div className="flex flex-col h-full w-full space-y-4">
-          <span className="font-bold text-xl">Cutoff Results</span>
-          <DemoTable data={tableData ?? []} />
         </div>
       </div>
-    </div>
+    </Layout>
   )
 }
 
