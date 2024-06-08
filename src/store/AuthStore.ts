@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { create } from 'zustand'
+import { FrappeResponse } from '../types/Frappe'
 
 export interface LoginResponseAPI {
   message: string
@@ -15,9 +16,9 @@ export interface LoginResponseAPI {
 }
 
 type AuthStoreType = {
-  signup: (name: string, usr: string, pwd: string) => {}
-  login: (usr: string, pwd: string) => {}
-  verifySignup: (token: string) => {}
+  signup: (name: string, usr: string, pwd: string) => any
+  login: (usr: string, pwd: string) => any
+  verifySignup: (token: string) => any
 
   loginResponse: LoginResponseAPI
   setLoginResponse: (response: LoginResponseAPI) => void
@@ -34,13 +35,16 @@ export const useAuthStore = create<AuthStoreType>()((set) => ({
     return res
   },
   signup: async (name: string, email: string, password: string) => {
-    const res = await axios.post(
-      `${BASE_URL}/api/method/cutoff_app.core.auth.custom_signup_user`, //?name=${name}&email=${email}&password=${password}`,
-      { email: email, name: name, password: password },
-      { headers: {} }
-    )
-    console.log('signup response>>>', res)
-    return res
+    try {
+      const res: any = await axios.post(
+        `${BASE_URL}/api/method/cutoff_app.core.auth.custom_signup_user`, //?name=${name}&email=${email}&password=${password}`,
+        { email: email, name: name, password: password },
+        { headers: {} }
+      )
+      return res
+    } catch (error:any) {
+      return error
+    }
   },
   verifySignup: async (token: string) => {
     const res = await axios.post(
@@ -48,7 +52,6 @@ export const useAuthStore = create<AuthStoreType>()((set) => ({
       { token: token },
       { headers: {} }
     )
-    console.log('signup response>>>', res)
     return res
   },
   loginResponse: {} as LoginResponseAPI,

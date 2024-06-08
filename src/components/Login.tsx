@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import { LoginResponseAPI } from '../store/CutoffStore'
 import { Checkbox } from 'primereact/checkbox'
+import { FrappeResponse } from '../types/Frappe'
 
 type LoginInputs = {
   email: string
@@ -22,7 +23,7 @@ type SignUpInputs = {
   password: string
 }
 
-export const Signup = ({ verifyHandler }) => {
+export const Signup = ({ verifyHandler }: any) => {
   const {
     register,
     handleSubmit,
@@ -35,21 +36,24 @@ export const Signup = ({ verifyHandler }) => {
 
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
-      const res = await signup(data.username, data.email, data.password)
+      const res: any = await signup(data.username, data.email, data.password)
       if (res?.status === 200) {
-        // setLoginInfo(res?.data)
         localStorage.setItem('user', JSON.stringify(res?.data))
-        toast.success('Login Success')
+        toast.success('Signup Success')
         verifyHandler(true)
-        console.log('showing verify checkbox')
-
-        // navigate('/cutoff')
       } else {
-        console.log('Login Failed >>>', res)
-        toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
+        const errorMessage =
+          JSON.parse(JSON.parse(res?.response?.data?._server_messages)[0])
+            ?.message ?? ''
+
+        if (errorMessage.trim().length > 0) {
+          toast.error(`Failed to Signup, ${errorMessage}`)
+        } else {
+          toast.error(`Unexpected Issue ${res?.data?.status} }`)
+        }
       }
     } catch (error) {
-      toast.error(`Failed to Login, ${error}`)
+      toast.error(`Failed to Signup, ${error}`)
     }
   }
 
@@ -71,7 +75,13 @@ export const Signup = ({ verifyHandler }) => {
           <input
             className="w-[40%]"
             defaultValue="metyho@citmo.net"
-            {...register('email')}
+            {...register('email', {
+              required: true,
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: 'invalid email address'
+              }
+            })}
           />
         </div>
 
@@ -117,21 +127,20 @@ export const Login = () => {
       localStorage.getItem('user') &&
       'access_token' in JSON.parse(localStorage.getItem('user') || '')
     ) {
-      // navigate('/cutoff')
+      navigate('/cutoff')
     }
   }, [])
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
       const res = await login(data.email, data.password)
-      console.log('response >>>', res)
       if (res?.status === 200) {
         setLoginInfo(res?.data)
         localStorage.setItem('user', JSON.stringify(res?.data))
         toast.success('Login Success')
-        // navigate('/cutoff')
+        navigate('/cutoff')
       } else {
-        console.log('Login Failed >>>', res)
+        // console.log('Login Failed >>>', res)
         toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
       }
     } catch (error) {
@@ -147,7 +156,13 @@ export const Login = () => {
         <input
           className="w-[40%]"
           defaultValue="rohanshetty.dev@gmail.com"
-          {...register('email')}
+          {...register('email', {
+            required: true,
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: 'invalid email address'
+            }
+          })}
         />
       </div>
 
@@ -184,28 +199,26 @@ export const AuthPage = () => {
   }
   return (
     <>
-      <div className="grid grid-rows-6 w-full h-full p-4 bg-green-300 ">
+      <div className="grid grid-rows-6 w-full h-full p-4  ">
         <Toaster />
         <div className="flex flex-col row-span-1 items-center justify-center p-8 w-full h-full">
-          <h1 className="text-3xl">
-            Simple Cutoff Tracker for KCET Engineering
-          </h1>
+          <h1 className="text-3xl">Cutoff Tracker for KCET Engineering</h1>
           <p>Includes First Round Cutoff Ranks from 2022, 2023</p>
         </div>
 
         {/* Web Responsive */}
-        <div className="flex w-full h-full row-span-5 bg-yellow-400 items-center justify-center">
+        <div className="flex w-full h-full row-span-5  items-center justify-center">
           <div className=" lg:w-[40%] w-full h-full flex flex-col items-center justify-start  ">
             {!showVerify && (
               <div className="flex flex-row  items-center justify-center w-full p-4 space-x-8 ">
                 <Button
-                  className="p-2 font-bold text-xl"
+                  className="py-2 px-4 font-bold text-xl"
                   onClick={() => setBtnPressed(1)}
                 >
                   SignUp
                 </Button>
                 <Button
-                  className="p-2 font-bold text-xl"
+                  className="px-4 py-2 placeholder-opacity-80 font-bold text-xl"
                   onClick={() => setBtnPressed(0)}
                 >
                   Login
@@ -225,6 +238,23 @@ export const AuthPage = () => {
                 <></>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div>
+          <div className="flex flex-row items-center justify-center w-full h-full space-x-4">
+            <p className="text-center">© 2023 Cutoff Tracker</p>
+
+            <p className="text-center ">
+              Made with ❤️ by{' '}
+              <a
+                className="hover:text-blue-400 no-underline"
+                href="https://www.linkedin.com/in/rohan-shetty641/"
+              >
+                Rohan Shetty
+              </a>
+            </p>
           </div>
         </div>
 

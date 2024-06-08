@@ -299,7 +299,7 @@ const Cutoff = () => {
                       }
                   ]
               }
-                console.log('submit button pressed...',  formInputs)
+                // console.log('submit button pressed...',  formInputs)
                 // console.log(getValues())
                 const response = await getCutoffResults({
                   min_cutoff: formInputs.min_cutoff,

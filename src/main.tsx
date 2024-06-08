@@ -10,6 +10,7 @@ import Tailwind from 'primereact/passthrough/tailwind'
 import Login, { AuthPage } from './components/Login'
 import Test from './components/Test'
 import { VerifyComponent } from './components/Verify'
+import Profile from './components/Profile'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: '/verify',
     element: <VerifyComponent />
+  },
+  {
+    path: '/profile',
+    element: <Profile />
   }
 ])
 

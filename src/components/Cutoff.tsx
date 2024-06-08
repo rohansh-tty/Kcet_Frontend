@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import logo from './logo.svg'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { Button } from 'primereact/button'
@@ -10,15 +10,22 @@ import { log, table } from 'console'
 import { useCutoffStore } from '../store/CutoffStore'
 import { useAuthStore } from '../store/AuthStore'
 
+import { Menubar } from 'primereact/menubar'
+import { Avatar } from 'primereact/avatar'
+import { InputText } from 'primereact/inputtext'
+import { Badge } from 'primereact/badge'
+import { Menu } from 'primereact/menu'
+import { useNavigate } from 'react-router-dom'
+
 const Test = () => {
   return (
     <>
-      <div className="bg-yellow-500 w-full h-full">
+      <div className=" w-full h-full">
         <div className="grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 h-full w-full">
-          <div className="h-full w-full bg-green-400 flex  items-center justify-center">
+          <div className="h-full w-full  flex  items-center justify-center">
             <h1>R1</h1>
           </div>
-          <div className="h-full w-full bg-blue-400">
+          <div className="h-full w-full ">
             <h1>R2</h1>
           </div>
         </div>
@@ -36,7 +43,7 @@ type Inputs = {
   min_cutoff: string
   max_cutoff: string
 
-  category: string
+  category: string[]
   year: string[]
   round: string
   branch: BranchOptionType[]
@@ -77,6 +84,50 @@ const caste_category_columns = [
   'STK',
   'STR'
 ]
+
+export function TemplateDemo() {
+  const itemRenderer = (item: any) => (
+    <a className="flex align-items-center p-menuitem-link">
+      <span className={item.icon} />
+      <span className="mx-2">{item.label}</span>
+      {item.badge && <Badge className="ml-auto" value={item.badge} />}
+      {item.shortcut && (
+        <span className="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">
+          {item.shortcut}
+        </span>
+      )}
+    </a>
+  )
+  const items = []
+
+  // const start = <img alt="logo" src="https://primefaces.org/cdn/primereact/images/logo.png" height="40" className="mr-2"></img>;
+  const start = (
+    <>
+      <div className="font-bold text-2xl ">
+        <span>KCET Cutoff Analyzer</span>
+      </div>
+    </>
+  )
+  const end = (
+    <div className="flex align-items-center gap-2">
+      <InputText
+        placeholder="Search"
+        type="text"
+        className="w-8rem sm:w-auto"
+      />
+      <Avatar
+        image="https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png"
+        shape="circle"
+      />
+    </div>
+  )
+
+  return (
+    <div className="card">
+      <Menubar model={items} start={start} end={end} />
+    </div>
+  )
+}
 
 const Cutoff = () => {
   const [count, setCount] = useState(0)
@@ -135,20 +186,62 @@ const Cutoff = () => {
     getBranches()
   }, [])
 
+  const profileMenu = useRef(null)
+  const navigate = useNavigate()
+
+  const items = [
+    {
+      label: 'Account Settings',
+      items: [
+        // {
+        //   label: 'Profile',
+        //   icon: 'pi pi-user',
+        //   command: () => {
+        //     navigate('/profile')
+        //   }
+        // },
+        {
+          label: 'Logout',
+          icon: 'pi pi-arrow-right',
+          command: () => {
+            localStorage.removeItem('user')
+            navigate('/')
+          }
+        }
+      ]
+    }
+  ]
   return (
-    <div className="grid md:grid-rows-9 md:grid-cols-1  h-full w-full bg-yellow-400">
-      <p className="row-span-1 h-full w-full font-bold">KCET Cutoff Analyzer</p>
-      <div className="row-span-4 h-full w-full bg-green-400 flex  items-center justify-center">
+    <div className="grid grid-rows-9  grid-cols-1  h-full w-full ">
+      <div className="row-span-1 flex   items-center w-full border-2 ">
+        <div className="flex flex-row  items-center justify-between w-full p-8 ">
+          <div className="font-bold text-2xl ">
+            <span>KCET Cutoff Analyzer</span>
+          </div>
+          <Menu model={items} popup ref={profileMenu} id="popup_menu_left" />
+
+          <Avatar
+            onClick={(event: any) => profileMenu?.current.toggle(event)}
+            aria-controls="popup_menu_left"
+            aria-haspopup
+            label="V"
+            size="large"
+            style={{ backgroundColor: '#2196F3', color: '#ffffff' }}
+          />
+        </div>
+        {/* <TemplateDemo /> */}
+      </div>
+      <div className="md:row-span-4  row-span-4 h-full w-full pl-8 flex items-start justify-start  border-2 ">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col  space-y-8 h-full w-[40%] items-center justify-center   "
+          className="flex flex-col  space-y-8 h-full md:w-[40%] w-[90%] items-center justify-center    "
         >
           {/* register your input into the hook by invoking the "register" function */}
-          <div className="flex flex-row space-x-2">
+          <div className="flex flex-row w-full space-x-2">
             <div className="flex flex-col space-y-2 md:space-y-0">
               <label className="text-black">Min Rank</label>
               <input
-                className="rounded-md w-[40%]"
+                className="rounded-md md:w-[40%] w-full"
                 defaultValue="1000"
                 {...register('min_cutoff')}
               />
@@ -158,7 +251,7 @@ const Cutoff = () => {
             <div className="flex flex-col space-y-2 md:space-y-0">
               <label className="text-black">Max Rank</label>
               <input
-                className="rounded-md w-[40%]"
+                className="rounded-md md:w-[40%] w-full"
                 defaultValue="15000"
                 {...register('max_cutoff')}
               />
@@ -166,7 +259,7 @@ const Cutoff = () => {
             </div>
           </div>
 
-          <div className="flex flex-row w-full space-x-2">
+          <div className="flex flex-row w-full space-x-2 ">
             {/* Caste */}
             <div className="flex flex-col w-full">
               <label className="text-black">Caste Category</label>
@@ -176,6 +269,7 @@ const Cutoff = () => {
                 render={({ field }) => (
                   <ReactSelect
                     className="w-full"
+                    isMulti={true}
                     isClearable
                     {...field}
                     options={caste_category_columns.map((item) => ({
@@ -260,79 +354,73 @@ const Cutoff = () => {
             </div>
           </div>
 
-          {/* <input type="submit" /> */}
-          {/* <Button
-          onClick={() => {
-            console.log('submit button pressed...')
-          }}
-          className="bg-black rounded-md w-[25%] p-2 text-primary md:p-1"
-          label="Submit"
-        /> */}
-          <Button
-            className="bg-black text-primary w-[40%]"
-            label="Submit"
-            icon="pi pi-check"
-            iconPos="right"
-            onClick={async () => {
-              // TODO: uncomment this
-              const formInputs = getValues()
-              //   const formInputs = {
-              //     "min_cutoff": "1000",
-              //     "max_cutoff": "15000",
-              //     "category": {
-              //         "value": "3BG",
-              //         "label": "3BG"
-              //     },
-              //     "round": {
-              //         "value": "1",
-              //         "label": "1"
-              //     },
-              //     "year": [
-              //         {
-              //             "value": "2023",
-              //             "label": "2023"
-              //         }
-              //     ],
-              //     "branch": [
-              //         {
-              //             "branch_name": "Computer Science",
-              //             "branch_short_name": "CS"
-              //         }
-              //     ]
-              // }
-              console.log('submit button pressed...', formInputs)
-              // console.log(getValues())
-              const response = await getCutoffResults({
-                min_cutoff: formInputs.min_cutoff,
-                max_cutoff: formInputs.max_cutoff,
-                branch: formInputs?.branch
-                  ?.map((branch) => branch.branch_short_name)
-                  .join(','),
-                year: formInputs.year.map((item: any) => item.value).join(','),
-                round: formInputs.round.value,
-                category: formInputs.category.value
-              })
+          <div className="flex flex-row items-center justify-end w-full ">
+            <Button
+              className="bg-black text-primary  w-[50%] rounded-md"
+              label="Submit"
+              icon="pi pi-check"
+              iconPos="right"
+              onClick={async () => {
+                // TODO: uncomment this
+                const formInputs = getValues()
+                const response = await getCutoffResults({
+                  min_cutoff: formInputs.min_cutoff,
+                  max_cutoff: formInputs.max_cutoff,
+                  branch: formInputs?.branch
+                    ?.map((branch) => branch.branch_short_name)
+                    .join(','),
+                  year: formInputs.year
+                    .map((item: any) => item.value)
+                    .join(','),
+                  round: formInputs.round.value,
+                  category: formInputs.category
+                    .map((item: any) => item.value)
+                    .join(',')
+                })
 
-              // const resData = await response.text()
-              // sort data by cutoff in asceding order
-              setTableData(
-                response['data'].sort((a: any, b: any) => a.cutoff - b.cutoff)
-              )
-            }}
-          />
+                // const resData = await response.text()
+                // sort data by cutoff in asceding order
+                setTableData(
+                  response['data'].sort((a: any, b: any) => a.cutoff - b.cutoff)
+                )
+              }}
+            />
+          </div>
         </form>
-        {/* </div> */}
       </div>
-      {tableData && tableData.length > 0 ? (
-        <div className="row-span-4 md:h-full md:w-full overflow-scroll flex items-center justify-center bg-red-400">
-          {' '}
-          <DemoTable data={tableData} />
+      <div className="md:row-span-4 row-span-4 md:h-full lg:w-full overflow-scroll flex items-center justify-start p-8">
+        <div className="flex flex-col h-full w-full space-y-4">
+          <span className="font-bold text-xl">Cutoff Results</span>
+          <DemoTable data={tableData ?? []} />
         </div>
-      ) : (
-        <></>
-      )}
+      </div>
     </div>
   )
 }
 
 export default Cutoff
+
+//   const formInputs = {
+//     "min_cutoff": "1000",
+//     "max_cutoff": "15000",
+//     "category": {
+//         "value": "3BG",
+//         "label": "3BG"
+//     },
+//     "round": {
+//         "value": "1",
+//         "label": "1"
+//     },
+//     "year": [
+//         {
+//             "value": "2023",
+//             "label": "2023"
+//         }
+//     ],
+//     "branch": [
+//         {
+//             "branch_name": "Computer Science",
+//             "branch_short_name": "CS"
+//         }
+//     ]
+// }

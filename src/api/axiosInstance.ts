@@ -10,7 +10,7 @@ const loginInfo = useAuthStore((state)=>state.loginResponse)
 axios.interceptors.request.use(
     config => {
         if ('access_token' in loginInfo && !!loginInfo['access_token'].trim()){
-            console.log('passing auth header....')
+            // console.log('passing auth header....')
             config.headers['Authorization'] = `Bearer ${loginInfo['access_token']}`;
         }
           return config;
