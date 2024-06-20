@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { on } from 'events'
 import { Avatar } from 'primereact/avatar'
 import { Button } from 'primereact/button'

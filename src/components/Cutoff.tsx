@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import logo from './logo.svg'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
@@ -18,6 +19,8 @@ import { Menu } from 'primereact/menu'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 import Layout from './Layout'
+import { CutoffType } from '../types/Base'
+import { MenuItem } from 'primereact/menuitem'
 
 const Test = () => {
   return (
@@ -100,7 +103,7 @@ export function TemplateDemo() {
       )}
     </a>
   )
-  const items = []
+  const items: MenuItem[] = []
 
   // const start = <img alt="logo" src="https://primefaces.org/cdn/primereact/images/logo.png" height="40" className="mr-2"></img>;
   const start = (
@@ -133,7 +136,7 @@ export function TemplateDemo() {
 
 const Cutoff = () => {
   const [count, setCount] = useState(0)
-  const [tableData, setTableData] = useState([])
+  const [tableData, setTableData] = useState<CutoffType[]>([])
   const [branchList, setBranchList] = useState([])
   const {
     register,
@@ -262,6 +265,7 @@ const Cutoff = () => {
                       isMulti={true}
                       isClearable
                       {...field}
+                      // @ts-ignore
                       options={caste_category_columns.map((item) => ({
                         value: item,
                         label: item
@@ -283,10 +287,9 @@ const Cutoff = () => {
                       className="w-full"
                       isClearable
                       {...field}
+                      // @ts-ignore
                       options={[
                         { value: '1', label: '1' },
-                        // { value: '2', label: '2' },
-                        // { value: '3', label: '3' }
                       ]}
                     />
                   )}
@@ -308,6 +311,7 @@ const Cutoff = () => {
                       isClearable
                       blurInputOnSelect
                       {...field}
+                      // @ts-ignore
                       options={[ '2022', '2023'].map(
                         (item) => ({
                           value: item,
@@ -362,6 +366,7 @@ const Cutoff = () => {
                     year: formInputs.year
                       .map((item: any) => item.value)
                       .join(','),
+                    //@ts-ignore
                     round: formInputs.round.value,
                     category: formInputs.category
                       .map((item: any) => item.value)

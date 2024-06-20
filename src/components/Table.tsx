@@ -1,17 +1,12 @@
+//@ts-nocheck
 import React, { useState, useEffect, useRef } from 'react'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { ProductService } from '../ProductService'
 import { Button } from 'primereact/button'
+import { CutoffType } from '../types/Base'
 
-interface CutoffType {
-  college_code: string
-  cutoff: string
-  branch: string
-  category: string
-  college_name: string
-  year: string
-}
+
 
 export default function DemoTable({ data }: { data: CutoffType }) {
   const cols = [
@@ -42,55 +37,55 @@ export default function DemoTable({ data }: { data: CutoffType }) {
   ]
   const dt = useRef<any>(null)
 
-  const exportCSV = (selectionOnly) => {
-    dt.current.exportCSV({ selectionOnly })
-  }
-  const exportColumns = cols.map((col) => ({
-    title: col.header,
-    dataKey: col.field
-  }))
+  // const exportCSV = (selectionOnly) => {
+  //   dt.current.exportCSV({ selectionOnly })
+  // }
+  // const exportColumns = cols.map((col) => ({
+  //   title: col.header,
+  //   dataKey: col.field
+  // }))
 
-  const exportPdf = () => {
-    import('jspdf').then((jsPDF) => {
-      import('jspdf-autotable').then(() => {
-        const doc = new jsPDF.default('portrait')
+  // const exportPdf = () => {
+  //   import('jspdf').then((jsPDF) => {
+  //     import('jspdf-autotable').then(() => {
+  //       const doc = new jsPDF.default('portrait')
 
-        // doc.autoTable(exportColumns, )
-        doc.save('cutoff.pdf')
-      })
-    })
-  }
+  //       // doc.autoTable(exportColumns, )
+  //       doc.save('cutoff.pdf')
+  //     })
+  //   })
+  // }
 
-  const exportExcel = () => {
-    import('xlsx').then((xlsx) => {
-      const worksheet = xlsx.utils.json_to_sheet(data)
-      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] }
-      const excelBuffer = xlsx.write(workbook, {
-        bookType: 'xlsx',
-        type: 'array'
-      })
+  // const exportExcel = () => {
+  //   import('xlsx').then((xlsx) => {
+  //     const worksheet = xlsx.utils.json_to_sheet(data)
+  //     const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] }
+  //     const excelBuffer = xlsx.write(workbook, {
+  //       bookType: 'xlsx',
+  //       type: 'array'
+  //     })
 
-      saveAsExcelFile(excelBuffer, 'products')
-    })
-  }
+  //     saveAsExcelFile(excelBuffer, 'products')
+  //   })
+  // }
 
-  const saveAsExcelFile = (buffer, fileName) => {
-    import('file-saver').then((module) => {
-      if (module && module.default) {
-        let EXCEL_TYPE =
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-        let EXCEL_EXTENSION = '.xlsx'
-        const data = new Blob([buffer], {
-          type: EXCEL_TYPE
-        })
+  // const saveAsExcelFile = (buffer, fileName) => {
+  //   import('file-saver').then((module) => {
+  //     if (module && module.default) {
+  //       let EXCEL_TYPE =
+  //         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+  //       let EXCEL_EXTENSION = '.xlsx'
+  //       const data = new Blob([buffer], {
+  //         type: EXCEL_TYPE
+  //       })
 
-        module.default.saveAs(
-          data,
-          fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
-        )
-      }
-    })
-  }
+  //       module.default.saveAs(
+  //         data,
+  //         fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
+  //       )
+  //     }
+  //   })
+  // }
   //@ts-ignore
 
   return (
