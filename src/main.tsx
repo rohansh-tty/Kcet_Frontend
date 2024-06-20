@@ -8,7 +8,7 @@ import Cutoff from './components/Cutoff'
 import { PrimeReactProvider } from 'primereact/api'
 import Tailwind from 'primereact/passthrough/tailwind'
 import Login, { AuthPage } from './components/Login'
-import Test from './components/Test'
+// import Test from './components/Test'
 import { VerifyComponent } from './components/Verify'
 import Profile from './components/Profile'
 
@@ -17,10 +17,10 @@ const router = createBrowserRouter([
     path: '/cutoff',
     element: <Cutoff />
   },
-  {
-    path: '/test',
-    element: <Test />
-  },
+  // {
+  //   path: '/test',
+  //   element: <Test />
+  // },
   {
     path: '/',
     element: <AuthPage />
@@ -38,7 +38,8 @@ const router = createBrowserRouter([
 ReactDOM.render(
   <React.StrictMode>
     <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
-      <RouterProvider router={router}>{/* <App /> */}</RouterProvider>
+      <RouterProvider router={router} />
+      {/* <App /></RouterProvider> */}
     </PrimeReactProvider>
   </React.StrictMode>,
   document.getElementById('root')

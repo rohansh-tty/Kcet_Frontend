@@ -21,33 +21,32 @@ type Inputs = {
   branch: string
 }
 
-const Menu = () => {
-  const itemRenderer = (item: any) => (
-    <a className="flex align-items-center p-menuitem-link">
-      <span className={item.icon} />
-      <span className="mx-2">{item.label}</span>
-      {item.badge && <Badge className="ml-auto" value={item.badge} />}
-      {item.shortcut && (
-        <span className="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">
-          {item.shortcut}
-        </span>
-      )}
-    </a>
-  )
-  const items = []
+// const Menu = () => {
+//   const itemRenderer = (item: any) => (
+//     <a className="flex align-items-center p-menuitem-link">
+//       <span className={item.icon} />
+//       <span className="mx-2">{item.label}</span>
+//       {item.badge && <Badge className="ml-auto" value={item.badge} />}
+//       {item.shortcut && (
+//         <span className="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">
+//           {item.shortcut}
+//         </span>
+//       )}
+//     </a>
+//   )
 
-  const start = <span className="text-accent">KCET Cutoff Analyzer</span>
-  const end = (
-    <div className="flex align-items-center gap-2">
-      {/* <span>Dark Mode</span> */}
-    </div>
-  )
-  return (
-    <div className="card">
-      <Menubar model={items} start={start} end={end} />
-    </div>
-  )
-}
+//   const start = <span className="text-accent">KCET Cutoff Analyzer</span>
+//   const end = (
+//     <div className="flex align-items-center gap-2">
+//       {/* <span>Dark Mode</span> */}
+//     </div>
+//   )
+//   return (
+//     <div className="card">
+//       <Menubar model={items} start={start} end={end} />
+//     </div>
+//   )
+// }
 
 function App(): ReactElement {
   const items = [
@@ -68,7 +67,7 @@ function App(): ReactElement {
     <>
       <div className="flex flex-col h-screen w-screen overflow-y-scroll ">
         <Toaster />
-        <Menu />
+        {/* <Menu /> */}
         <div className="flex h-full w-full items-center justify-center">
           <Cutoff />
         </div>

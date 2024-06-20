@@ -285,8 +285,8 @@ const Cutoff = () => {
                       {...field}
                       options={[
                         { value: '1', label: '1' },
-                        { value: '2', label: '2' },
-                        { value: '3', label: '3' }
+                        // { value: '2', label: '2' },
+                        // { value: '3', label: '3' }
                       ]}
                     />
                   )}
@@ -308,7 +308,7 @@ const Cutoff = () => {
                       isClearable
                       blurInputOnSelect
                       {...field}
-                      options={['2019', '2020', '2021', '2022', '2023'].map(
+                      options={[ '2022', '2023'].map(
                         (item) => ({
                           value: item,
                           label: item

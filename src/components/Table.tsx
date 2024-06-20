@@ -53,7 +53,7 @@ export default function DemoTable({ data }: { data: CutoffType }) {
   const exportPdf = () => {
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then(() => {
-        const doc = new jsPDF.default("portrait")
+        const doc = new jsPDF.default('portrait')
 
         // doc.autoTable(exportColumns, )
         doc.save('cutoff.pdf')
@@ -91,6 +91,7 @@ export default function DemoTable({ data }: { data: CutoffType }) {
       }
     })
   }
+  //@ts-ignore
 
   return (
     <>
@@ -117,7 +118,6 @@ export default function DemoTable({ data }: { data: CutoffType }) {
         onClick={exportPdf}
         data-pr-tooltip="PDF"
       /> */}
-
       <DataTable
         value={data}
         paginator
@@ -125,7 +125,9 @@ export default function DemoTable({ data }: { data: CutoffType }) {
         rowsPerPageOptions={[5, 10, 25, 50]}
         showGridlines
         tableStyle={{ minWidth: '50rem' }}
-        emptyMessage={()=><div className="text-black">No Cutoff Data Found</div>}
+        emptyMessage={() => (
+          <div className="text-black">No Cutoff Data Found</div>
+        )}
         // bodyClassName="text-black"
       >
         <Column field="college_code" header="Code"></Column>
