@@ -155,7 +155,7 @@ export const Login = () => {
         <label>Email</label>
         <input
           className="w-[40%]"
-          defaultValue="rohanshetty.dev@gmail.com"
+          defaultValue=""
           {...register('email', {
             required: true,
             pattern: {
@@ -171,7 +171,7 @@ export const Login = () => {
         <label>Password</label>
         <input
           className="w-[40%]"
-          defaultValue="rohan@123"
+          defaultValue=""
           {...register('password', { required: true })}
         />
         {/* errors will return when field validation fails  */}
