@@ -37,6 +37,7 @@ export const Signup = ({ verifyHandler }: any) => {
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
       const res: any = await signup(data.username, data.email, data.password)
+      console.log('res >>', res)
       if (res?.status === 200) {
         localStorage.setItem('user', JSON.stringify(res?.data))
         toast.success('Signup Success')

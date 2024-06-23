@@ -7,7 +7,9 @@ type ProfileStoreType = {
   updateProfileDetails: (data: any) => any
 }
 
-export const BASE_URL = 'http://development.localhost:8000'
+// export const BASE_URL = 'http://development.localhost:8000'
+
+export const BASE_URL = 'https://dev.kcetcutoff.xyz'
 
 const myHeaders = new Headers()
 myHeaders.append('Access-Control-Allow-Origin', '*')

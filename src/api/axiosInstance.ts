@@ -1,12 +1,14 @@
 import axios from 'axios'
 import { useAuthStore } from '../store/AuthStore';
 
-const BACKEND_DEV_URL = ""
-const BACKEND_PROD_URL = ""
-
+// const BACKEND_DEV_URL = ""
+export const BACKEND_PROD_URL = "https://dev.kcetcutoff.xyz"
+export const BASE_URL = 'https://dev.kcetcutoff.xyz'
 
 export const client = axios.create({
-    baseURL: "http://development.localhost:8000"
+    // baseURL: import.meta.env.VITE_APP_BACKEND_URL
+    baseURL: 'https://dev.kcetcutoff.xyz'
+
 })
 
 

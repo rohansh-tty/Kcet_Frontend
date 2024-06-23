@@ -24,7 +24,8 @@ type AuthStoreType = {
   setLoginResponse: (response: LoginResponseAPI) => void
 }
 
-export const BASE_URL = 'http://development.localhost:8000'
+// export const BASE_URL = 'http://development.localhost:8000'
+const BASE_URL = 'https://dev.kcetcutoff.xyz'
 
 export const useAuthStore = create<AuthStoreType>()((set) => ({
   login: async (usr: string, pwd: string) => {

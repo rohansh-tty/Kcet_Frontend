@@ -11,8 +11,8 @@ type CutoffStoreType = {
   cutoffResponse: LoginResponseAPI
   setCutoff: (response: LoginResponseAPI) => void
 }
+export const BASE_URL = 'https://dev.kcetcutoff.xyz'
 
-export const BASE_URL = 'http://development.localhost:8000'
 
 const myHeaders = new Headers()
 myHeaders.append('Access-Control-Allow-Origin', '*')
