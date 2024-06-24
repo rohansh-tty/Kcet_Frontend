@@ -1,4 +1,3 @@
-import { Sign } from 'crypto'
 import { Button } from 'primereact/button'
 import { TabPanel, TabView } from 'primereact/tabview'
 import React, { useEffect, useState } from 'react'
@@ -10,18 +9,8 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import { LoginResponseAPI } from '../store/CutoffStore'
 import { Checkbox } from 'primereact/checkbox'
-import { FrappeResponse } from '../types/Frappe'
+import { SignUpInputs, LoginInputs } from '../types/Base'
 
-type LoginInputs = {
-  email: string
-  password: string
-}
-
-type SignUpInputs = {
-  username: string
-  email: string
-  password: string
-}
 
 export const Signup = ({ verifyHandler }: any) => {
   const {
@@ -37,7 +26,6 @@ export const Signup = ({ verifyHandler }: any) => {
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
       const res: any = await signup(data.username, data.email, data.password)
-      console.log('res >>', res)
       if (res?.status === 200) {
         localStorage.setItem('user', JSON.stringify(res?.data))
         toast.success('Signup Success')
@@ -141,7 +129,6 @@ export const Login = () => {
         toast.success('Login Success')
         navigate('/cutoff')
       } else {
-        // console.log('Login Failed >>>', res)
         toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
       }
     } catch (error) {

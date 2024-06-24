@@ -1,13 +1,10 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { create } from 'zustand'
-import { CutoffArgs } from '../components/Cutoff'
 
 type ProfileStoreType = {
   updateProfileDetails: (data: any) => any
 }
-
-// export const BASE_URL = 'http://development.localhost:8000'
 
 export const BASE_URL = 'https://dev.kcetcutoff.xyz'
 

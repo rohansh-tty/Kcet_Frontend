@@ -14,3 +14,6 @@ package-lock.json
 
 # dist
 dist/
+
+# gitignore bru collection, will push once completed
+api_collection

@@ -19,49 +19,8 @@ import { Menu } from 'primereact/menu'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 import Layout from './Layout'
-import { CutoffType } from '../types/Base'
 import { MenuItem } from 'primereact/menuitem'
-
-const Test = () => {
-  return (
-    <>
-      <div className=" w-full h-full">
-        <div className="grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 h-full w-full">
-          <div className="h-full w-full  flex  items-center justify-center">
-            <h1>R1</h1>
-          </div>
-          <div className="h-full w-full ">
-            <h1>R2</h1>
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-
-type BranchOptionType = {
-  branch_name: string
-  branch_short_name: string
-}
-
-type Inputs = {
-  min_cutoff: string
-  max_cutoff: string
-
-  category: string[]
-  year: string[]
-  round: string
-  branch: BranchOptionType[]
-}
-
-export interface CutoffArgs {
-  min_cutoff: string
-  max_cutoff: string
-  branch: string
-  round: string
-  year: string
-  category: string
-}
+import { CutoffArgs, CutoffType } from '../types/Base'
 
 const caste_category_columns = [
   '1G',
@@ -105,7 +64,6 @@ export function TemplateDemo() {
   )
   const items: MenuItem[] = []
 
-  // const start = <img alt="logo" src="https://primefaces.org/cdn/primereact/images/logo.png" height="40" className="mr-2"></img>;
   const start = (
     <>
       <div className="font-bold text-2xl ">
@@ -152,28 +110,9 @@ const Cutoff = () => {
 
   const loginResponse = useAuthStore((state) => state.loginResponse)
 
-  const getCutoff = async (args: CutoffArgs) => {
-    const myHeaders = new Headers()
-    myHeaders.append('Authorization', `Bearer ${loginResponse.access_token}`)
-    myHeaders.append('Access-Control-Allow-Origin', '*')
-
-    const requestOptions = {
-      method: 'GET',
-      headers: myHeaders
-    }
-
-    // console.log('muyh', myHeaders)
-    // const res = await getBranch(myHeaders)
-    // console.log('res ', res)
-
-    const res = await fetch(
-      `http://development.localhost:8000/api/resource/Cutoff?filters=[["cutoff", ">", "${args.min_cutoff}"], ["cutoff", "<", "${args.max_cutoff}"], ["branch", "in", "${args.branch}"], ["round", "=", "${args.round}"], ["year", "in", "${args.year}"], ["category", "=", "${args.category}"]]&fields=["college_code", "cutoff", "branch", "category", "college_name", "year"]&limit_page_length=0`,
-      requestOptions
-    )
-  }
+  // TODO: get category from API call
   const getCategories = () => {}
   const getBranches = async () => {
-    // api/resource/Branch?fields=["branch_name", "branch_short_name"]&limit_page_length=0
     const myHeaders = new Headers()
     myHeaders.append('Authorization', `Bearer ${loginResponse.access_token}`)
     myHeaders.append('Access-Control-Allow-Origin', '*')
@@ -184,7 +123,7 @@ const Cutoff = () => {
     }
 
     const res = await getBranch()
-    setBranchList(res?.data)
+    setBranchList(res?.data ?? [])
   }
 
   useEffect(() => {
@@ -203,13 +142,6 @@ const Cutoff = () => {
     {
       label: 'Account Settings',
       items: [
-        // {
-        //   label: 'Profile',
-        //   icon: 'pi pi-user',
-        //   command: () => {
-        //     navigate('/profile')
-        //   }
-        // },
         {
           label: 'Logout',
           icon: 'pi pi-arrow-right',
@@ -355,7 +287,6 @@ const Cutoff = () => {
                 icon="pi pi-check"
                 iconPos="right"
                 onClick={async () => {
-                  // TODO: uncomment this
                   const formInputs = getValues()
                   const response = await getCutoffResults({
                     min_cutoff: formInputs.min_cutoff,
@@ -373,7 +304,6 @@ const Cutoff = () => {
                       .join(',')
                   })
 
-                  // const resData = await response.text()
                   // sort data by cutoff in asceding order
                   setTableData(
                     response['data'].sort(
@@ -397,28 +327,3 @@ const Cutoff = () => {
 }
 
 export default Cutoff
-
-//   const formInputs = {
-//     "min_cutoff": "1000",
-//     "max_cutoff": "15000",
-//     "category": {
-//         "value": "3BG",
-//         "label": "3BG"
-//     },
-//     "round": {
-//         "value": "1",
-//         "label": "1"
-//     },
-//     "year": [
-//         {
-//             "value": "2023",
-//             "label": "2023"
-//         }
-//     ],
-//     "branch": [
-//         {
-//             "branch_name": "Computer Science",
-//             "branch_short_name": "CS"
-//         }
-//     ]
-// }

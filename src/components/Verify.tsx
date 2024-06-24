@@ -41,10 +41,9 @@ const Verify = () => {
             if (res?.status === 200) {
               toast.success('Email Verification Success!')
               setTimeout(() => {
-                navigate('/cutoff')
+                navigate('/')
               }, 2000)
             } else {
-              // console.log('Login Failed >>>', res)
               toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
             }
           }}

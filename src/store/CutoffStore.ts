@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { create } from 'zustand'
-import { CutoffArgs } from '../components/Cutoff'
+import { CutoffArgs } from '../types/Base'
 
 export interface LoginResponseAPI {}
 
@@ -11,7 +11,7 @@ type CutoffStoreType = {
   cutoffResponse: LoginResponseAPI
   setCutoff: (response: LoginResponseAPI) => void
 }
-export const BASE_URL = 'https://dev.kcetcutoff.xyz'
+ const BASE_URL = 'https://dev.kcetcutoff.xyz'
 
 
 const myHeaders = new Headers()
