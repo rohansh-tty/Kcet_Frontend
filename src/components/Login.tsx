@@ -54,7 +54,7 @@ export const Signup = ({ verifyHandler }: any) => {
           <label>Name</label>
           <input
             className="w-[40%]"
-            defaultValue="test"
+            defaultValue=""
             {...register('username')}
           />
         </div>
@@ -63,7 +63,7 @@ export const Signup = ({ verifyHandler }: any) => {
           <label>Email</label>
           <input
             className="w-[40%]"
-            defaultValue="metyho@citmo.net"
+            defaultValue=""
             {...register('email', {
               required: true,
               pattern: {
@@ -79,7 +79,7 @@ export const Signup = ({ verifyHandler }: any) => {
           <label>Password</label>
           <input
             className="w-[40%]"
-            defaultValue="test@123"
+            defaultValue=""
             {...register('password', { required: true })}
           />
           {/* errors will return when field validation fails  */}
