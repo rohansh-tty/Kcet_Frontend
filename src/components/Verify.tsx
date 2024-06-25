@@ -14,7 +14,9 @@ const Verify = () => {
   const params = new URLSearchParams(window.location.search)
   const emailToken = params.get('token')
   const navigate = useNavigate()
-
+  const verifyCall = async (emailToken: any) => {
+    return verifySignup(emailToken)
+  }
   return (
     <div className="grid grid-cols-1 grid-row-3 space-x-6 gap-4">
       {/* Checkbox */}
@@ -37,15 +39,22 @@ const Verify = () => {
         <button
           className="bg-blue-500 px-6 py-4 font-bold rounded-md  items-center flex text-lg"
           onClick={async () => {
-            const res = await verifySignup(emailToken || '')
-            if (res?.status === 200) {
-              toast.success('Email Verification Success!')
-              setTimeout(() => {
-                navigate('/')
-              }, 2000)
-            } else {
-              toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
-            }
+            toast.promise(verifyCall(emailToken), {
+              loading: 'Verifying your email...',
+              error: (err) => {
+                return `Email Verification failed, ${err}`
+              },
+              success: (res) => {
+                if (res?.status === 200) {
+                  setTimeout(() => {
+                    navigate('/')
+                  }, 2000)
+                  return 'Email Verification Success!'
+                } else {
+                  return `Unexpected Issue ${res?.data?.status}, ${res?.data}`
+                }
+              }
+            })
           }}
         >
           Submit

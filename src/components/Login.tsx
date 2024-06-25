@@ -11,7 +11,6 @@ import { LoginResponseAPI } from '../store/CutoffStore'
 import { Checkbox } from 'primereact/checkbox'
 import { SignUpInputs, LoginInputs } from '../types/Base'
 
-
 export const Signup = ({ verifyHandler }: any) => {
   const {
     register,
@@ -25,22 +24,32 @@ export const Signup = ({ verifyHandler }: any) => {
 
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
-      const res: any = await signup(data.username, data.email, data.password)
-      if (res?.status === 200) {
-        localStorage.setItem('user', JSON.stringify(res?.data))
-        toast.success('Signup Success')
-        verifyHandler(true)
-      } else {
-        const errorMessage =
-          JSON.parse(JSON.parse(res?.response?.data?._server_messages)[0])
-            ?.message ?? ''
-
-        if (errorMessage.trim().length > 0) {
-          toast.error(`Failed to Signup, ${errorMessage}`)
-        } else {
-          toast.error(`Unexpected Issue ${res?.data?.status} }`)
-        }
+      const signUpCall = async (data: any) => {
+        return signup(data.username, data.email, data.password)
       }
+      toast.promise(signUpCall(data), {
+        loading: 'Signing you up...',
+        error: (err: any) => {
+          return `Error in Signup, ${err}`
+        },
+        success: (res: any) => {
+          if (res?.status === 200) {
+            localStorage.setItem('user', JSON.stringify(res?.data))
+            verifyHandler(true)
+            return 'Signup Success'
+          } else {
+            const errorMessage =
+              JSON.parse(JSON.parse(res?.response?.data?._server_messages)[0])
+                ?.message ?? ''
+
+            if (errorMessage.trim().length > 0) {
+              return `Failed to Signup, ${errorMessage}`
+            } else {
+              return `Unexpected Issue ${res?.data?.status} }`
+            }
+          }
+        }
+      })
     } catch (error) {
       toast.error(`Failed to Signup, ${error}`)
     }
@@ -122,15 +131,27 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
-      const res = await login(data.email, data.password)
-      if (res?.status === 200) {
-        setLoginInfo(res?.data)
-        localStorage.setItem('user', JSON.stringify(res?.data))
-        toast.success('Login Success')
-        navigate('/cutoff')
-      } else {
-        toast.error(`Unexpected Issue ${res?.data?.status}, ${res?.data}`)
+      const loginCall = async (data: any)=>{
+        return login(data.email, data.password)
       }
+      toast.promise(loginCall(data), {
+        loading: 'Logging you in...',
+        error: (err: any)=>{
+          return `Error in Login, ${err}`
+        },
+        success: (res: any)=>{
+          if (res?.status === 200) {
+            setLoginInfo(res?.data)
+            localStorage.setItem('user', JSON.stringify(res?.data))
+            navigate('/cutoff')
+            return 'Login Success'
+
+          } else {
+            return `Unexpected Issue ${res?.data?.status}, ${res?.data}`
+          
+          }
+        }
+      })
     } catch (error) {
       toast.error(`Failed to Login, ${error}`)
     }
