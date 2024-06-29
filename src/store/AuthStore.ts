@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { create } from 'zustand'
 import { FrappeResponse } from '../types/Frappe'
+import { client } from '../api/axiosInstance'
 
 export interface LoginResponseAPI {
   message: string
@@ -24,20 +25,19 @@ type AuthStoreType = {
   setLoginResponse: (response: LoginResponseAPI) => void
 }
 
-const BASE_URL = 'https://dev.kcetcutoff.xyz'
 
 export const useAuthStore = create<AuthStoreType>()((set) => ({
   login: async (usr: string, pwd: string) => {
-    const res = await axios.get(
-      `${BASE_URL}/api/method/cutoff_app.core.auth.get_token?usr=${usr}&pwd=${pwd}`,
+    const res = await client.get(
+      `api/method/cutoff_app.core.auth.get_token?usr=${usr}&pwd=${pwd}`,
       { headers: {} }
     )
     return res
   },
   signup: async (name: string, email: string, password: string) => {
     try {
-      const res: any = await axios.post(
-        `${BASE_URL}/api/method/cutoff_app.core.auth.custom_signup_user`, //?name=${name}&email=${email}&password=${password}`,
+      const res: any = await client.post(
+        `api/method/cutoff_app.core.auth.custom_signup_user`, //?name=${name}&email=${email}&password=${password}`,
         { email: email, name: name, password: password },
         { headers: {} }
       )
@@ -47,8 +47,8 @@ export const useAuthStore = create<AuthStoreType>()((set) => ({
     }
   },
   verifySignup: async (token: string) => {
-    const res = await axios.post(
-      `${BASE_URL}/api/method/cutoff_app.core.auth.email_verification_handler?token=${token}`,
+    const res = await client.post(
+      `api/method/cutoff_app.core.auth.email_verification_handler?token=${token}`,
       { token: token },
       { headers: {} }
     )

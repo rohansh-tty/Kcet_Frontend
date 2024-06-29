@@ -21,6 +21,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import Layout from './Layout'
 import { MenuItem } from 'primereact/menuitem'
 import { CutoffArgs, CutoffType } from '../types/Base'
+import { debugFormInputs } from '../utils/debug'
 
 const caste_category_columns = [
   '1G',
