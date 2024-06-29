@@ -41,7 +41,7 @@ const Layout = ({ children }: any) => {
   }, [])
 
   return (
-    <div className="grid grid-rows-10  grid-cols-1  h-full w-full">
+    <div className="grid grid-rows-10  grid-cols-1  h-screen w-full">
       <div className="row-span-1  flex   items-center w-full  ">
         <div className="flex flex-row  items-center justify-between w-full p-8">
           <div className="font-bold text-2xl ">
@@ -65,7 +65,7 @@ const Layout = ({ children }: any) => {
         </div>
         {/* <TemplateDemo /> */}
       </div>
-      <main className="row-span-8 ">{children}</main>
+      <main className="row-span-8">{children}</main>
       <div className="row-span-1">
         <div className="flex flex-row items-center justify-center w-full h-full space-x-4">
           <p className="text-center">© 2023 Cutoff Tracker</p>

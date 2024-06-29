@@ -33,7 +33,6 @@
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "universal-cookie": "^7.1.4",
-    "xlsx": "^0.18.5",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

@@ -11,6 +11,8 @@ import Login, { AuthPage } from './components/Login'
 // import Test from './components/Test'
 import { VerifyComponent } from './components/Verify'
 import Profile from './components/Profile'
+import 'primeicons/primeicons.css';
+        
 
 const router = createBrowserRouter([
   {

@@ -97,6 +97,7 @@ const Cutoff = () => {
   const [count, setCount] = useState(0)
   const [tableData, setTableData] = useState<CutoffType[]>([])
   const [branchList, setBranchList] = useState([])
+  const [formFilters, setFormFilters] = useState([])
   const {
     register,
     handleSubmit,
@@ -157,11 +158,11 @@ const Cutoff = () => {
 
   return (
     <Layout>
-      <div className="grid grid-rows-8  grid-cols-1  h-full w-full ">
+      <div className="grid grid-rows-8  grid-cols-1  h-screen w-full ">
         <div className="md:row-span-4  row-span-4 h-full w-full pl-8 flex items-start justify-start  border-2 ">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col  space-y-8 h-full md:w-[40%] w-[90%] items-center justify-center    "
+            className="flex flex-col  space-y-8 h-full md:w-[60%] w-[90%] items-center justify-center    "
           >
             <div className="flex flex-row w-full space-x-2">
               <div className="flex flex-col space-y-2 md:space-y-0">
@@ -283,12 +284,13 @@ const Cutoff = () => {
 
             <div className="flex flex-row items-center justify-end w-full ">
               <Button
-                className="bg-black text-primary  w-[50%] rounded-md"
+                className="bg-black text-primary w-[40%] md:w-[20%] rounded-md px-4 py-2"
                 label="Submit"
-                icon="pi pi-check"
+                // icon="pi pi-check"
                 iconPos="right"
                 onClick={async () => {
                   const formInputs = getValues()
+                  setFormFilters(formInputs)
                   const response = await getCutoffResults({
                     min_cutoff: formInputs.min_cutoff,
                     max_cutoff: formInputs.max_cutoff,
@@ -316,10 +318,10 @@ const Cutoff = () => {
             </div>
           </form>
         </div>
-        <div className="md:row-span-4 row-span-4 md:h-full lg:w-full overflow-scroll flex items-center justify-start p-8">
+        <div className="md:row-span-4 row-span-4 md:h-full lg:w-full  flex items-center  justify-start p-8">
           <div className="flex flex-col h-full w-full space-y-4">
             <span className="font-bold text-xl">Cutoff Results</span>
-            <DemoTable data={tableData ?? []} />
+            <DemoTable data={tableData ?? []} filters={formFilters ?? {}}/>
           </div>
         </div>
       </div>
