@@ -193,19 +193,25 @@ const Cutoff = () => {
                 <Controller
                   name="category"
                   control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      className="w-full"
-                      isMulti={true}
-                      isClearable
-                      {...field}
-                      // @ts-ignore
-                      options={caste_category_columns.map((item) => ({
-                        value: item,
-                        label: item
-                      }))}
-                    />
-                  )}
+                  render={({ field }) => {
+                    const formValues = getValues()
+                    return (
+                      <>
+                        <ReactSelect
+                          className="w-full"
+                          isMulti={true}
+                          isClearable
+                          {...field}
+                          isDisabled={formValues.category?.length >= 5}
+                          // @ts-ignore
+                          options={caste_category_columns.map((item) => ({
+                            value: item,
+                            label: item
+                          }))}
+                        />
+                      </>
+                    )
+                  }}
                 />
                 {errors.category && <span>This field is required</span>}
               </div>
@@ -222,9 +228,7 @@ const Cutoff = () => {
                       isClearable
                       {...field}
                       // @ts-ignore
-                      options={[
-                        { value: '1', label: '1' },
-                      ]}
+                      options={[{ value: '1', label: '1' }]}
                     />
                   )}
                 />
@@ -246,12 +250,10 @@ const Cutoff = () => {
                       blurInputOnSelect
                       {...field}
                       // @ts-ignore
-                      options={[ '2022', '2023'].map(
-                        (item) => ({
-                          value: item,
-                          label: item
-                        })
-                      )}
+                      options={['2022', '2023'].map((item) => ({
+                        value: item,
+                        label: item
+                      }))}
                     />
                   )}
                 />
@@ -264,19 +266,22 @@ const Cutoff = () => {
                 <Controller
                   name="branch"
                   control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      isMulti={true}
-                      className="w-full"
-                      isClearable
-                      blurInputOnSelect
-                      {...field}
-                      getOptionLabel={(option) => option.branch_name}
-                      getOptionValue={(option) => option.branch_short_name}
-                      // options={branch_map}
-                      options={branchList}
-                    />
-                  )}
+                  render={({ field }) => {
+                    const formValues = getValues()
+                    return (
+                      <ReactSelect
+                        isMulti={true}
+                        className="w-full"
+                        isClearable
+                        blurInputOnSelect
+                        {...field}
+                        isDisabled={formValues.branch?.length >= 5}
+                        getOptionLabel={(option) => option.branch_name}
+                        getOptionValue={(option) => option.branch_short_name}
+                        options={branchList}
+                      />
+                    )
+                  }}
                 />
                 {errors.branch && <span>This field is required</span>}
               </div>
@@ -321,7 +326,7 @@ const Cutoff = () => {
         <div className="md:row-span-4 row-span-4 md:h-full lg:w-full  flex items-center  justify-start p-8">
           <div className="flex flex-col h-full w-full space-y-4">
             <span className="font-bold text-xl">Cutoff Results</span>
-            <DemoTable data={tableData ?? []} filters={formFilters ?? {}}/>
+            <DemoTable data={tableData ?? []} filters={formFilters ?? {}} />
           </div>
         </div>
       </div>
