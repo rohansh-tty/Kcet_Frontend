@@ -60,7 +60,7 @@ export const Signup = ({ verifyHandler }: any) => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full ">
         {/* register your input into the hook by invoking the "register" function */}
         <div className="flex flex-col space-y-1 my-4 items-center justify-center">
-          <label>Name</label>
+          <label className="flex items-start  w-[40%]">Name</label>
           <input
             className="w-[40%]"
             defaultValue=""
@@ -69,7 +69,7 @@ export const Signup = ({ verifyHandler }: any) => {
         </div>
 
         <div className="flex flex-col space-y-1 my-4 items-center justify-center">
-          <label>Email</label>
+          <label className="flex items-start  w-[40%]">Email</label>
           <input
             className="w-[40%]"
             defaultValue=""
@@ -85,7 +85,7 @@ export const Signup = ({ verifyHandler }: any) => {
 
         {/* include validation with required or other standard HTML validation rules */}
         <div className="flex flex-col space-y-1 my-4 items-center justify-center">
-          <label>Password</label>
+          <label className='flex items-start  w-[40%]'>Password</label>
           <input
             className="w-[40%]"
             defaultValue=""
@@ -161,7 +161,7 @@ export const Login = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full ">
       {/* register your input into the hook by invoking the "register" function */}
       <div className="flex flex-col space-y-1 my-4 items-center justify-center">
-        <label>Email</label>
+        <label className="flex items-start  w-[40%]">Email</label>
         <input
           className="w-[40%]"
           defaultValue=""
@@ -177,7 +177,7 @@ export const Login = () => {
 
       {/* include validation with required or other standard HTML validation rules */}
       <div className="flex flex-col space-y-1 my-4 items-center justify-center">
-        <label>Password</label>
+        <label className='flex items-start  w-[40%]'>Password</label>
         <input
           className="w-[40%]"
           defaultValue=""
