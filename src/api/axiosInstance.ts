@@ -8,8 +8,8 @@ export const BACKEND_DEBUG_URL = 'http://development.localhost:8000'
 
 export const client = axios.create({
   // baseURL: import.meta.env.VITE_APP_BACKEND_URL
-  // baseURL: BACKEND_PROD_URL,
-  baseURL: BACKEND_DEBUG_URL
+  baseURL: BACKEND_PROD_URL,
+  // baseURL: BACKEND_DEBUG_URL
 })
 
 axios.interceptors.request.use(
