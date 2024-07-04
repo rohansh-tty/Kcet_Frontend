@@ -40,8 +40,8 @@ The output columns need to be verbose, which I am improving.
 
 ## Note:
 
-Right now, it is not open for open-source development. As I have to update the development backend for debug/test. I am planning to add that once the project gets some traction or users.
+Right now, it is not open for open-source development. As I have to update the development backend for debug/test. I am planning to add that once the project gets some traction or users. Here's the link to [Backend repository](https://github.com/rohansh-tty/KCET_Backend)
 
 ### ToDos:
-- [ ] Make monorepo of both Frontend and Backend
+- [ ] Make a mono repo of both Frontend and Backend
 - [ ] Create a Development setup and expose cutoff APIs
