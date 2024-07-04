@@ -1,3 +1,9 @@
+# KCET Cutoff Analyzer
+
+
+### Context:
+The Karnataka Common Entrance Test (KCET) is an annual entrance exam conducted by the Karnataka Examination Authority (KEA) for admission into various undergraduate courses in engineering, architecture, pharmacy, agriculture, and other allied courses offered by colleges in the state of Karnataka.
+
 ## Pain Point
 
  The default cutoff list from KEA is huge and confusing. Creating a custom table for specific filters would help in the Application process. I had this pain point while I was applying and recently when my brother was.
@@ -7,11 +13,14 @@ The idea here is to act like a filter and get consistent data. But the major set
 
 ## Tech Stack
 
-I wanted to keep tech-stack simple, as I wanted to focus more on improving PDF table parsing. The app frontend is built using React + Primereact and the backend is running onFrappe connected to MariaDB, hosted on DigitalOcean.
+I wanted to keep tech-stack simple, as I wanted to focus more on improving PDF table parsing. I have used Vercel and DigitalOcean for my deployments
+
+- **Frontend**: Vite, React, Tailwind, Primereact and React Router
+- **Backend**: Python, Frappe, Redis, MariaDB
 
 ## Solution
 
-Now I started with tabula-py, but it missed a lot of rows. For starters, it had issues where for a single row that has let's say 20 columns, 4 column’s data will be in 1 row, then some x columns data will be in 2 rows, and so on. No pattern, pure randomness. Tried writing a logic for it, but also explored other alternatives simultaneously. 
+Now I started with tabula-py, but it missed a lot of rows. For starters, it had issues where for a single row that has 20 columns, 4 columns data will be in 1 row, then some x columns data will be in 2 rows, and so on. No pattern, pure randomness. Tried writing a logic for it, but also explored other alternatives simultaneously. 
 
 ![Single Cell Value Aggregation problem](https://drive.google.com/uc?id=1NQh2PpMGDsVS1YS-OuwFWzpQHajCVD7b)
 ![More such problems](https://drive.google.com/uc?id=1xwZqn3xA10RTZO7yppec49gctTHzsfjo)
@@ -27,8 +36,8 @@ And I did the same, after 2 months of effort, the app is in the MVP stage. So I 
 
 ## Result
 ![Result Comparision](https://drive.google.com/uc?id=1h0-32-puEMvoHEZzlTvk-PxU2-HcXZUJ)
-The output columns need to be verbose, which I am working on improving.
+The output columns need to be verbose, which I am improving.
 
 ## Note:
 
-Right now, it is not open for open-source development. As I have to update the development backend for debug/test. Planning to add that once the project get’s some traction or users.
+Right now, it is not open for open-source development. As I have to update the development backend for debug/test. I am planning to add that once the project gets some traction or users.
