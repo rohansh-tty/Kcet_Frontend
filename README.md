@@ -41,3 +41,8 @@ The output columns need to be verbose, which I am improving.
 ## Note:
 
 Right now, it is not open for open-source development. As I have to update the development backend for debug/test. I am planning to add that once the project gets some traction or users.
+
+### ToDos:
+- [ ] Make monorepo of both Frontend and Backend
+- [ ] Expose cutoff APIs for public
+- [ ] Create a Development setup and expose cutoff APIs
