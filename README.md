@@ -44,5 +44,4 @@ Right now, it is not open for open-source development. As I have to update the d
 
 ### ToDos:
 - [ ] Make monorepo of both Frontend and Backend
-- [ ] Expose cutoff APIs for public
 - [ ] Create a Development setup and expose cutoff APIs
