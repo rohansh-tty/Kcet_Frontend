@@ -11,8 +11,8 @@ import Login, { AuthPage } from './components/Login'
 // import Test from './components/Test'
 import { VerifyComponent } from './components/Verify'
 import Profile from './components/Profile'
-import 'primeicons/primeicons.css';
-        
+import 'primeicons/primeicons.css'
+import HomeLayout from './components/Layout/HomeLayout'
 
 const router = createBrowserRouter([
   {
@@ -23,9 +23,17 @@ const router = createBrowserRouter([
   //   path: '/test',
   //   element: <Test />
   // },
+  // {
+  //   path: '/',
+  //   element: <AuthPage />
+  // },
   {
     path: '/',
-    element: <AuthPage />
+    element: (
+      <HomeLayout>
+        <AuthPage />
+      </HomeLayout>
+    )
   },
   {
     path: '/verify',
