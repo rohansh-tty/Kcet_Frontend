@@ -20,6 +20,7 @@ export const Signup = ({ verifyHandler }: any) => {
   } = useForm<SignUpInputs>()
   const cookies = new Cookies()
   const navigate = useNavigate()
+  const [showPass, setShowPass] = useState(false)
   const signup = useAuthStore((state) => state.signup)
 
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
@@ -62,7 +63,7 @@ export const Signup = ({ verifyHandler }: any) => {
         <div className="flex flex-col space-y-1 my-4 items-center justify-center">
           <label className="flex items-start  w-[40%]">Name</label>
           <input
-            className="w-[40%]"
+            className="w-[40%] rounded-lg"
             defaultValue=""
             {...register('username')}
           />
@@ -71,7 +72,7 @@ export const Signup = ({ verifyHandler }: any) => {
         <div className="flex flex-col space-y-1 my-4 items-center justify-center">
           <label className="flex items-start  w-[40%]">Email</label>
           <input
-            className="w-[40%]"
+            className="w-[40%] rounded-lg"
             defaultValue=""
             {...register('email', {
               required: true,
@@ -81,25 +82,43 @@ export const Signup = ({ verifyHandler }: any) => {
               }
             })}
           />
+          {errors.email && <span className="text-red-600">Email is required</span>}
+
         </div>
 
         {/* include validation with required or other standard HTML validation rules */}
-        <div className="flex flex-col space-y-1 my-4 items-center justify-center">
-          <label className='flex items-start  w-[40%]'>Password</label>
-          <input
-            className="w-[40%]"
-            defaultValue=""
-            {...register('password', { required: true })}
-          />
+        <div className="flex flex-col space-y-1 my-4 items-center justify-center w-full">
+          <label className="flex items-start  w-[40%]">Password</label>
+          <div className="flex flex-row w-[40%] ">
+            <input
+              className="w-[85%] rounded-lg"
+              defaultValue=""
+              type={showPass ? 'text' : 'password'}
+              {...register('password', { required: true })}
+            />
+            <Button type="button" icon={showPass ? "pi pi-eye": "pi pi-eye-slash"} aria-label="Show Pass" onClick={()=>setShowPass((prev)=>!prev)} />
+
+          </div>
           {/* errors will return when field validation fails  */}
-          {errors.password && <span>This field is required</span>}
+          {errors.password && <span className="text-red-600">Password is required</span>}
         </div>
 
         {/* <input type="submit" /> */}
-        <div className="p-2 w-full flex items-center justify-center ">
-          <button className="bg-blue-500 p-4 rounded-md  items-center flex text-lg">
+        {/* <div className="p-2 w-full flex items-center justify-center ">
+          <Button
+            className="bg-blue-500 p-4 rounded-md  items-center flex text-lg"
+            icon="pi-arrow-right"
+          >
             Submit
-          </button>
+          </Button>
+        </div> */}
+        <div className="p-2 w-full flex items-center justify-center ">
+          <Button
+            className="bg-blue-500 px-8 py-2 rounded-md  w-[40%] items-center flex sm:text-base text-lg"
+            label="Signup"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+          ></Button>
         </div>
       </form>
     </>
@@ -118,6 +137,7 @@ export const Login = () => {
   const loginInfo = useAuthStore((state) => state.loginResponse)
   const setLoginInfo = useAuthStore((state) => state.setLoginResponse)
   const cookies = new Cookies()
+  const [showPass, setShowPass] = useState(false)
 
   // chevk if user is already logged in
   useEffect(() => {
@@ -131,24 +151,22 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
-      const loginCall = async (data: any)=>{
+      const loginCall = async (data: any) => {
         return login(data.email, data.password)
       }
       toast.promise(loginCall(data), {
         loading: 'Logging you in...',
-        error: (err: any)=>{
+        error: (err: any) => {
           return `Error in Login, ${err}`
         },
-        success: (res: any)=>{
+        success: (res: any) => {
           if (res?.status === 200) {
             setLoginInfo(res?.data)
             localStorage.setItem('user', JSON.stringify(res?.data))
             navigate('/cutoff')
             return 'Login Success'
-
           } else {
             return `Unexpected Issue ${res?.data?.status}, ${res?.data}`
-          
           }
         }
       })
@@ -163,7 +181,7 @@ export const Login = () => {
       <div className="flex flex-col space-y-1 my-4 items-center justify-center">
         <label className="flex items-start  w-[40%]">Email</label>
         <input
-          className="w-[40%]"
+          className="rounded-lg w-[40%]"
           defaultValue=""
           {...register('email', {
             required: true,
@@ -173,36 +191,53 @@ export const Login = () => {
             }
           })}
         />
+          {errors.email && <span className="text-red-600">Email is required</span>}
+
       </div>
 
       {/* include validation with required or other standard HTML validation rules */}
       <div className="flex flex-col space-y-1 my-4 items-center justify-center">
-        <label className='flex items-start  w-[40%]'>Password</label>
-        <input
-          className="w-[40%]"
-          defaultValue=""
-          {...register('password', { required: true })}
-        />
+        <label className="flex items-start  w-[40%]">Password</label>
+        <div className="flex flex-row w-[40%] ">
+            <input
+              className="w-[85%] rounded-lg"
+              defaultValue=""
+              type={showPass ? 'text' : 'password'}
+              {...register('password', { required: true })}
+            />
+            <Button type="button" icon={showPass ? "pi pi-eye": "pi pi-eye-slash"} aria-label="Show Pass" onClick={()=>setShowPass((prev)=>!prev)} />
+
+          </div>
         {/* errors will return when field validation fails  */}
-        {errors.password && <span>This field is required</span>}
+        {errors.password && <span className="text-red-600">Password is required</span>}
       </div>
+
+      {/* <div className="flex flex-col space-y-1 my-4 items-center justify-center">
+        <span className="flex items-start  w-[40%] text-xs underline">
+          Forgot Password?
+        </span>
+      </div> */}
 
       {/* <input type="submit" /> */}
       <div className="p-2 w-full flex items-center justify-center ">
-        <button className="bg-blue-500 p-4 rounded-md  items-center flex text-lg">
-          Submit
-        </button>
+        <Button
+          className="bg-blue-500 px-8 py-2 rounded-md w-[40%] items-center flex sm:text-base text-lg text-slate-50"
+          label="Login"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          type="submit"
+        ></Button>
       </div>
     </form>
   )
 }
 
 export const AuthPage = () => {
-  const [signUpPressed, setBtnPressed] = useState(0)
+  const [signUpPressed, setSignUpPressed] = useState(0)
   const [showVerify, setShowVerify] = useState(false)
   const verifyHandler = (value: boolean) => {
     if (signUpPressed) {
-      setBtnPressed(0)
+      setSignUpPressed(0)
       setShowVerify(value)
     }
   }
@@ -220,24 +255,53 @@ export const AuthPage = () => {
           <div className=" lg:w-[40%] w-full h-full flex flex-col items-center justify-start  ">
             {!showVerify && (
               <div className="flex flex-row  items-center justify-center w-full p-4 space-x-8 ">
-                <Button
+                {/* <Button
                   className="py-2 px-4 font-bold text-xl"
-                  onClick={() => setBtnPressed(1)}
+                  onClick={() => setSignUpPressed(1)}
                 >
                   SignUp
                 </Button>
                 <Button
                   className="px-4 py-2 placeholder-opacity-80 font-bold text-xl"
-                  onClick={() => setBtnPressed(0)}
+                  onClick={() => setSignUpPressed(0)}
                 >
                   Login
-                </Button>
+                </Button> */}
+                <span className="text-2xl font-bold ">{signUpPressed ? '': 'Welcome back'}</span>
               </div>
             )}
 
             <div className="w-full">
-              {!!signUpPressed && <Signup verifyHandler={verifyHandler} />}
-              {!signUpPressed && !showVerify && <Login />}
+              {!!signUpPressed && (
+                <>
+                  <Signup verifyHandler={verifyHandler} />
+                  <div className="flex flex-col space-y-1 my-4 items-center justify-center">
+                    <span
+                      className="flex items-start  w-[40%] text-xs text-slate-500"
+                      onClick={() => setSignUpPressed(0)}
+                    >
+                      I have an account,{' '}
+                      <span className=" text-blue-600 underline">Sign in</span>
+                    </span>
+                  </div>
+                </>
+              )}
+              {!signUpPressed && !showVerify && (
+                <>
+                  <Login />
+                  <div className="flex flex-col space-y-1 my-4 items-center justify-center">
+                    <span
+                      className="flex items-start  w-[40%] text-xs text-slate-500"
+                      onClick={() => setSignUpPressed(1)}
+                    >
+                      I don't have an account,
+                      <span className="text-blue-600  underline">
+                        {'  '}Sign me up!
+                      </span>
+                    </span>
+                  </div>
+                </>
+              )}
               {showVerify ? (
                 <p className="text-center">
                   Thank you for signing up, you will be receiving a verfication
@@ -273,8 +337,8 @@ export const AuthPage = () => {
           <div className="col-span-2 bg-red-400 ">
             {!showVerify && (
               <div className="flex flex-row space-x-4 items-center justify-center w-full">
-                <Button onClick={() => setBtnPressed(1)}>SignUp</Button>
-                <Button onClick={() => setBtnPressed(0)}>Login</Button>
+                <Button onClick={() => setSignUpPressed(1)}>SignUp</Button>
+                <Button onClick={() => setSignUpPressed(0)}>Login</Button>
               </div>
             )}
 

@@ -11,6 +11,7 @@ import { InputText } from 'primereact/inputtext'
 import { Avatar } from 'primereact/avatar'
 import { Badge } from 'primereact/badge'
 import { Toaster } from 'react-hot-toast'
+import 'primeicons/primeicons.css';
 
 const frappe = new FrappeApp('http://127.0.0.1:8000')
 
