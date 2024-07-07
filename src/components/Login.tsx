@@ -118,7 +118,7 @@ export const Signup = ({ verifyHandler, loginToggleCallback }: SIGNUPROPTT) => {
           </div>
           <div className="p-2 w-full flex items-center justify-left ">
             <p className="  rounded-md  items-center flex text-lg">
-              Already Have an account{' '}
+              Already have an account?{' '}
               <span
                 className="text-blue-500 pl-2 cursor-pointer"
                 onClick={() => {
@@ -229,7 +229,7 @@ export const Login = ({ signUpToggleCallback }: LOGINTY) => {
           </div>
           <div className="p-2 w-full flex items-center justify-left ">
             <p className="  rounded-md  items-center flex text-lg">
-              Dont Have an account{' '}
+              Don't have an account?{' '}
               <span
                 className="text-blue-500 pl-2 cursor-pointer"
                 onClick={() => {
