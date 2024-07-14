@@ -13,7 +13,7 @@ import { SignUpInputs, LoginInputs } from '../types/Base'
 
 type SIGNUPROPTT = {
   loginToggleCallback: () => void
-  verifyHandler: (boolean) => void
+  verifyHandler: (value: boolean) => void
 }
 export const Signup = ({ verifyHandler, loginToggleCallback }: SIGNUPROPTT) => {
   const {
