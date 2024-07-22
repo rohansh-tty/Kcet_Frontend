@@ -24,6 +24,7 @@ export const Signup = ({ verifyHandler, loginToggleCallback }: SIGNUPROPTT) => {
   } = useForm<SignUpInputs>()
   const cookies = new Cookies()
   const navigate = useNavigate()
+  const [showPass, setShowPass] = useState(false)
   const signup = useAuthStore((state) => state.signup)
 
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
@@ -149,6 +150,7 @@ export const Login = ({ signUpToggleCallback }: LOGINTY) => {
   const loginInfo = useAuthStore((state) => state.loginResponse)
   const setLoginInfo = useAuthStore((state) => state.setLoginResponse)
   const cookies = new Cookies()
+  const [showPass, setShowPass] = useState(false)
 
   // chevk if user is already logged in
   useEffect(() => {
@@ -254,11 +256,11 @@ export const Login = ({ signUpToggleCallback }: LOGINTY) => {
 }
 
 export const AuthPage = () => {
-  const [signUpPressed, setBtnPressed] = useState(0)
+  const [signUpPressed, setSignUpPressed] = useState(0)
   const [showVerify, setShowVerify] = useState(false)
   const verifyHandler = (value: boolean) => {
     if (signUpPressed) {
-      setBtnPressed(0)
+      setSignUpPressed(0)
       setShowVerify(value)
     }
   }
@@ -287,6 +289,7 @@ export const AuthPage = () => {
               >
                 Login
               </Button>
+
             </div>
           )} */}
 
@@ -341,8 +344,8 @@ export const AuthPage = () => {
           <div className="col-span-2 bg-red-400 ">
             {!showVerify && (
               <div className="flex flex-row space-x-4 items-center justify-center w-full">
-                <Button onClick={() => setBtnPressed(1)}>SignUp</Button>
-                <Button onClick={() => setBtnPressed(0)}>Login</Button>
+                <Button onClick={() => setSignUpPressed(1)}>SignUp</Button>
+                <Button onClick={() => setSignUpPressed(0)}>Login</Button>
               </div>
             )}
 

@@ -2,6 +2,7 @@ import { Avatar } from 'primereact/avatar'
 import { Menu } from 'primereact/menu'
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 
 const Layout = ({ children }: any) => {
   const profileMenu = useRef(null)
@@ -65,7 +66,10 @@ const Layout = ({ children }: any) => {
         </div>
         {/* <TemplateDemo /> */}
       </div>
-      <main className="row-span-8">{children}</main>
+      <main className="row-span-8">
+        {children}
+        <Analytics />
+      </main>
       <div className="row-span-1">
         <div className="flex flex-row items-center justify-center w-full h-full space-x-4">
           <p className="text-center">© 2023 Cutoff Tracker</p>
